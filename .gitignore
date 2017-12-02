@@ -1,0 +1,7 @@
+.idea
+.settings
+./build
+.classpath
+.project
+.tern-project
+cs4050TermProject.iml
