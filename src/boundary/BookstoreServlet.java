@@ -278,6 +278,8 @@ public class BookstoreServlet extends HttpServlet {
 				HttpSession session = request.getSession(true);//getting the current session on startup
 				session.setMaxInactiveInterval(1800);
 				loadHomepage(session,template,root,u);
+				SimpleSequence bookSq = getBooks(bookstoreLogicImpl, db);
+				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
 		}
@@ -383,8 +385,13 @@ public class BookstoreServlet extends HttpServlet {
 			session.setAttribute("fname", u.getFname());
 			session.setAttribute("lname", u.getLname());
 			session.setAttribute("type", u.getType());
-		}
-		
+				}
+
+	}
+	
+	public SimpleSequence getBooks(BookstoreLogicImpl bli, DefaultObjectWrapperBuilder db) {
+		SimpleSequence sq = bli.getBook(db);
+		return  sq;
 	}
 
 }
