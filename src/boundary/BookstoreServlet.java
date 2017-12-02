@@ -243,21 +243,8 @@ public class BookstoreServlet extends HttpServlet {
 			session.setMaxInactiveInterval(1800);
 			int check = u.login();
 			if (check > 0 && u.getStatus().equals(Status.VERIFIED)) {
-				root.put("user", u.getFname());
-				root.put("type", u.getType());
-				
-				
-				synchronized(session) {
-					session.setAttribute("pwd",u.getPwd());
-					session.setAttribute("email", u.getEmail());
-					session.setAttribute("fname", u.getFname());
-					session.setAttribute("lname", u.getLname());
-					session.setAttribute("type", u.getType());
-				}
+				loadHomepage(session,template,root,u);
 				template="homepage.html";
-				
-				
-				
 			}
 			else if (!u.getStatus().equals(Status.VERIFIED)) {
 				template="verify.html";
@@ -290,10 +277,8 @@ public class BookstoreServlet extends HttpServlet {
 				//add cookie?? << not sure if that will work with freemarker template
 				HttpSession session = request.getSession(true);//getting the current session on startup
 				session.setMaxInactiveInterval(1800);
-				root.put("user", session.getAttribute("fname"));
-				root.put("type", session.getAttribute("type"));
+				loadHomepage(session,template,root,u);
 				template="homepage.html";
-				
 			}
 		}
 		
@@ -387,6 +372,18 @@ public class BookstoreServlet extends HttpServlet {
 		Gson gson = new Gson();//gson object
 		response.setContentType("application/json");//set responseType to json
 		response.getWriter().write(gson.toJson(test));//converts test object to json
+		
+	}
+	
+	private void loadHomepage(HttpSession session, String template, SimpleHash root, User u) {
+		root.put("user", u.getFname());
+		root.put("type", u.getType());
+		synchronized(session) {
+			session.setAttribute("email", u.getEmail());
+			session.setAttribute("fname", u.getFname());
+			session.setAttribute("lname", u.getLname());
+			session.setAttribute("type", u.getType());
+		}
 		
 	}
 
