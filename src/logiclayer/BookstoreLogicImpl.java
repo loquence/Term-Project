@@ -2,6 +2,8 @@ package logiclayer;
 
 import persistlayer.BookstorePersistImpl;
 import objectlayer.*;
+import freemarker.template.DefaultObjectWrapperBuilder;
+import freemarker.template.SimpleSequence;
 public class BookstoreLogicImpl {
 	private BookstorePersistImpl bookstorePersist;
 	
@@ -19,6 +21,10 @@ public class BookstoreLogicImpl {
 	
 	public int checkCode(String code) {
 		return bookstorePersist.checkCode(code);
+	}
+	
+	public SimpleSequence getBook(DefaultObjectWrapperBuilder db) {
+		return bookstorePersist.getBook(db);
 	}
 	
 	

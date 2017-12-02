@@ -112,6 +112,11 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.create(sql);
 	}
 	
+	public SimpleSequence getBook(DefaultObjectWrapperBuilder db) {
+		String sql = "Select book_id,title,author,selling_price from book;";
+		return DbAccessImpl.getSequence(sql,db);
+	}
+	
 	
 	
 }
