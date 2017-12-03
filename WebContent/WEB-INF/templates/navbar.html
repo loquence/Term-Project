@@ -1,5 +1,4 @@
 
-
 	<nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 
@@ -68,7 +67,10 @@
   								</li>
   								</#if>
   							</#if>
-                            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
+  							<form action="BookstoreServlet" method="POST" id="logoutForm">
+  								<input type="hidden" name="page" value="logout">
+  							</form>
+                            <li><a href="javascript:{}" onclick="document.getElementById('logoutForm')"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
                         </ul>
                     </div>    
                 

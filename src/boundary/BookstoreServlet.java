@@ -309,6 +309,10 @@ public class BookstoreServlet extends HttpServlet {
 				processor.processTemplate(template, root, request, response);
 				
 			}
+			if (page.equals("logout")) {
+				
+			}
+				
 			if(session.getAttribute("type").equals(UserType.ADMIN)) {
 				Admin a = new Admin("","","","",Status.VERIFIED);
 				root.put("user", session.getAttribute("fname"));
