@@ -43,12 +43,14 @@
                             <p>$${bq}</p>
                             </#if>
                             <#if bq?index%5==4>
+                            <#if type != "ADMIN">
                             <form action="BookstoreServlet" method="post">
                            
                             <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span></button></p>
                             <input type="hidden" name="page" value="addCart">
                             <input type="hidden" name="bookId" value="${bq?html}">
                             </form>
+                            </#if>
                             </div>   
                         </div>
                         </#if>
@@ -56,23 +58,6 @@
                 	</div>
                 	</#if>
                 </#list>
-                </#if>
-                <#if type == "ADMIN">
-                <div class="col-md-3 pull-right"  style="background:lightgray">
-                    <form action="BookstoreServlet" method="POST">
-                    <p><button type="submit" class="btn btn-default">Manage Users</button></p>
-                    <input type="hidden" name="page" value="editUsers">
-                    </form>
-                    <form action="BookstoreServlet" method="POST">
-                    	<p><button type="submit" class="btn btn-default">Edit Books</button></p>
-                    	<input type="hidden" name="page" value="editBooks">
-                    </form>
-					<p><button type="button" class="btn btn-default">Edit Promotions</button></p>   
-                    <form method="POST" action="BookstoreServlet">
-                    	<p><button type="submit" class="btn btn-default">Add Book</button></p>
-                    	<input type="hidden" name="page" value="addBookPage">
-                    </form>  
-                </div>
                 </#if>
         </div>
         

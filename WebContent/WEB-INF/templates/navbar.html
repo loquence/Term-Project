@@ -32,6 +32,36 @@
                             <li><a href="#"><span class="glyphicon glyphicon-user"></span>  Profile</a></li>
                             </#if>
                             </#if>
+                            <#if type??>
+                            	<#if type=="ADMIN">
+                            	<li class="dropdown">
+    								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
+    								<span class="caret"></span></a>
+    								<ul class="dropdown-menu">
+      									<li><form action="BookstoreServlet" method="POST" id="editUsersForm">
+                    						<input type="hidden" name="page" value="editUsers">
+                    						</form>
+                    						<a href="javascript:{}" onclick="document.getElementById('editUsersForm').submit()">Edit Users</a> 
+                    					</li>
+      									<li>
+      										<form action="BookstoreServlet" method="POST" id="editBooksForm">
+                    						<input type="hidden" name="page" value="editBooks">
+                    						</form>
+                    						<a href="javascript:{}" onclick="document.getElementById('editBooksForm').submit()">Edit Books</a> 
+      									</li>
+      									<li>
+      										<a>Edit Promotions</a>
+      									</li>
+      									<li>
+      										<form method="POST" action="BookstoreServlet" id="addBookForm">
+                    						<input type="hidden" name="page" value="addBookPage">
+                    						</form>
+                    						<a href="javascript:{}" onclick="document.getElementById('addBookForm').submit()">Add Book</a> 
+      									</li>  
+   									</ul>
+  								</li>
+  								</#if>
+  							</#if>
                             <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
                         </ul>
                     </div>    
