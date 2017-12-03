@@ -293,6 +293,9 @@ public class BookstoreServlet extends HttpServlet {
 		 * redirects to the index page
 		 */
 		HttpSession session = request.getSession(false);
+		if (page.equals("goHome") && session == null) {
+			
+		}
 		if (session != null) {
 			/*
 			 * checks if profile submits a request
@@ -307,9 +310,6 @@ public class BookstoreServlet extends HttpServlet {
 			if (page.equals("profile")) {
 				template = "profile.html";
 				processor.processTemplate(template, root, request, response);
-				
-			}
-			if (page.equals("logout")) {
 				
 			}
 				
@@ -363,8 +363,16 @@ public class BookstoreServlet extends HttpServlet {
 				}
 				
 			}
+			if (page.equals("logout")) {
+				session.invalidate();
+				template="signup.html";
+				
+			}
 			
 			
+		}
+		else {
+			template="error.html";
 		}
 		processor.processTemplate(template, root, request, response);
 	}
