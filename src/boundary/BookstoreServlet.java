@@ -330,7 +330,7 @@ public class BookstoreServlet extends HttpServlet {
 					String threshold = request.getParameter("min");
 					String sellP = request.getParameter("sellPrice");
 					String buyP = request.getParameter("buyPrice");
-					String cover = request.getParameter("cover");
+					String cover = "images/" + request.getParameter("cover");
 					String quant = request.getParameter("quantity");
 					
 					
