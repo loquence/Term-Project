@@ -25,18 +25,25 @@
            		<#if bq?index%3==0>
            		<div class="col-md-3">
            		</#if> 
-           			<div class="media hoverDiv">
+           			<div class="media hoverDiv" onclick="document.getElementById('${bq.id?html}').submit()">
+           				<form action="BookstoreServlet" method="POST" id="${bq.id?html}">
+           					<input type="hidden" name="page" value="viewBook">
+           					<input type="hidden" name="viewBookId" value="${bq.id?html}">
+           				</form>
                             <div class="media-left">   
                             <img width="150" height="150" src="${bq.cover?html}">
                             </div> 
                             <div class="media-body">
                                 <p>${bq.title}</p>
                                 <p>${bq.author}</p>
-                            <p>$6.00</p>
+                            <p>$${bq.sellingPrice}</p>
+                         <#if type != "ADMIN">
                          <form action="BookstoreServlet" method="POST">
                          <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span></button></p>
-                         <input type="hidden" name="page" value="${bq.id?html}">
+                         <input type="hidden" name="page" value="addToCart">
+                         <input type="hidden" name="bookId" value="${bq.id?html}">
                          </form>
+                         </#if>
                      </div>    
                 	</div>
                 <#if bq?index%3==2>	

@@ -89,7 +89,7 @@ public class BookstorePersistImpl {
 				
 				DbAccessImpl.update(update);
 				DbAccessImpl.update(delete);
-				u = DbAccessImpl.getObject(sql,ObjectType.User);
+				u = DbAccessImpl.getObject(sql,ObjectType.users);
 				return 1;
 			}
 			else {
@@ -102,7 +102,7 @@ public class BookstorePersistImpl {
 	
 	public <T> List<T> getUsers() {
 		String sql = "Select * FROM users where type!='" +UserType.ADMIN + "';";
-		return DbAccessImpl.getList(sql, ObjectType.User);
+		return DbAccessImpl.getList(sql, ObjectType.users);
 	}
 	
 	public int addBook(Book b) {
@@ -111,9 +111,14 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.create(sql);
 	}
 	
-	public <T> List<T> getBook(ObjectType o) {
-		String sql = "Select * from book;";
-		return DbAccessImpl.getList(sql,ObjectType.Book);
+	public <T> List<T> getObjectList(ObjectType o) {
+		String sql = "Select * from " + o + ";";
+		return DbAccessImpl.getList(sql,o);
+	}
+	
+	public <T> T getObject(String column, ObjectType o, String value) {
+		String sql = "Select * from " + o + " where " + column + "='" + value + "';";
+		return DbAccessImpl.getObject(sql, o);
 	}
 	
 	

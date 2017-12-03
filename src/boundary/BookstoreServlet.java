@@ -245,7 +245,7 @@ public class BookstoreServlet extends HttpServlet {
 			int check = u.login();
 			if (check > 0 && u.getStatus().equals(Status.VERIFIED)) {
 				loadHomepage(session,template,root,u);
-				List<Book> bookSq = getBooks(bookstoreLogicImpl);
+				List<Book> bookSq = getBookList(bookstoreLogicImpl);
 				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
@@ -281,7 +281,7 @@ public class BookstoreServlet extends HttpServlet {
 				HttpSession session = request.getSession(true);//getting the current session on startup
 				session.setMaxInactiveInterval(1800);
 				loadHomepage(session,template,root,u);
-				List<Book> bookSq = getBooks(bookstoreLogicImpl);
+				List<Book> bookSq = getBookList(bookstoreLogicImpl);
 				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
@@ -299,10 +299,18 @@ public class BookstoreServlet extends HttpServlet {
 			 * checks if profile submits a request
 			 * Currently nothing is implemented for the profile form
 			 */
+			if (page.equals("viewBook")) {
+				String id = request.getParameter("viewBookId");
+				Book b = bookstoreLogicImpl.getBook("book_id", id);
+				root.put("book", b);
+				root.put("user", session.getAttribute("fname"));
+				root.put("type", session.getAttribute("type"));
+				template="viewBook.html";
+			}
 			if (page.equals("goHome")) {
 				root.put("user", session.getAttribute("fname"));
 				root.put("type", session.getAttribute("type"));
-				root.put("bookSq", getBooks(bookstoreLogicImpl));
+				root.put("bookSq", getBookList(bookstoreLogicImpl));
 				template="homepage.html";
 			}
 			if (page.equals("profile")) {
@@ -358,6 +366,9 @@ public class BookstoreServlet extends HttpServlet {
 					template="addBook.html";
 					
 				}
+				if (page.equals("editUsersForm")) {
+					int id = Integer.parseInt(request.getParameter("editUserId"));
+				}
 				
 			}
 			if (page.equals("logout")) {
@@ -407,8 +418,8 @@ public class BookstoreServlet extends HttpServlet {
 
 	}
 	
-	public <T> List<T> getBooks(BookstoreLogicImpl bli) {
-		List<T> sq = bli.getBook(ObjectType.Book);
+	public <T> List<T> getBookList(BookstoreLogicImpl bli) {
+		List<T> sq = bli.getBookList();
 		return sq;
 	}
 	

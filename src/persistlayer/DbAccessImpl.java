@@ -190,7 +190,7 @@ public class DbAccessImpl {
 		List<T> ls = new ArrayList<T>();
 		try {
 		switch(o) {
-			case Book:
+			case book:
 				Book b;
 				
 				while(rs.next()){
@@ -201,7 +201,7 @@ public class DbAccessImpl {
 					ls.add((T) b);
 				}
 				break;
-			case User:
+			case users:
 				User u;
 				while(rs.next()) {
 					u = new User(rs.getString("fname"),rs.getString("lname"),rs.getString("email"),rs.getString("password"),Status.valueOf(rs.getString("status")),UserType.valueOf(rs.getString("type")));
@@ -209,14 +209,14 @@ public class DbAccessImpl {
 					ls.add((T) u);
 				}
 				break;
-			case Cart:
+			case cart:
 				ShoppingCart sc;
 				while(rs.next()) {
 					sc = new ShoppingCart(rs.getInt("cart_id"),rs.getDouble("totalPrice"));
 					ls.add((T) sc);
 				}
 				break;
-			case Promotion:
+			case promotion:
 				Promotion p;
 				while(rs.next()) {
 					p = new Promotion(rs.getString("code"),rs.getDouble("percentage"),rs.getDate("expiration"));
@@ -240,7 +240,7 @@ public class DbAccessImpl {
 		
 		try {
 			switch(o) {
-			case Book:
+			case book:
 				Book b = null;
 				while(rs.next()) {
 					b = new Book(rs.getString("isbn"),rs.getString("title"),rs.getString("category"),rs.getString("author"),rs.getInt("edition"),rs.getString("publisher"), rs.getInt("pub_year"),
@@ -248,20 +248,20 @@ public class DbAccessImpl {
 					b.setId(rs.getInt("book_id"));
 				}
 				return (T) b;
-			case User:
+			case users:
 				User u = null;
 				while(rs.next()) {
 					u = new User(rs.getString("fname"),rs.getString("lname"),rs.getString("email"),rs.getString("password"),Status.valueOf(rs.getString("status")),UserType.valueOf(rs.getString("type")));
 					u.setId(rs.getInt("id"));
 				}
 				return (T) u;
-			case Cart:
+			case cart:
 				ShoppingCart sc = null;
 				while(rs.next()) {
 					sc = new ShoppingCart(rs.getInt("cart_id"),rs.getDouble("totalPrice"));
 				}
 				return (T) sc;
-			case Promotion:
+			case promotion:
 				Promotion p = null;
 				while(rs.next()) {
 					p = new Promotion(rs.getString("code"),rs.getDouble("percentage"),rs.getDate("expiration"));

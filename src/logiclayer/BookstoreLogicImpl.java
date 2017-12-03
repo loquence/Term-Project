@@ -25,8 +25,12 @@ public class BookstoreLogicImpl {
 		return bookstorePersist.checkCode(code);
 	}
 	
-	public <T> List<T> getBook(ObjectType o) {
-		return bookstorePersist.getBook(o);
+	public <T> List<T> getBookList() {
+		return bookstorePersist.getObjectList(ObjectType.book);
+	}
+	
+	public <T> T getBook(String column, String value) {
+		return bookstorePersist.getObject(column, ObjectType.book, value);
 	}
 	
 	
