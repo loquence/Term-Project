@@ -245,7 +245,7 @@ public class BookstoreServlet extends HttpServlet {
 			int check = u.login();
 			if (check > 0 && u.getStatus().equals(Status.VERIFIED)) {
 				loadHomepage(session,template,root,u);
-				SimpleSequence bookSq = getBooks(bookstoreLogicImpl, db);
+				List<Book> bookSq = getBooks(bookstoreLogicImpl);
 				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
@@ -281,7 +281,7 @@ public class BookstoreServlet extends HttpServlet {
 				HttpSession session = request.getSession(true);//getting the current session on startup
 				session.setMaxInactiveInterval(1800);
 				loadHomepage(session,template,root,u);
-				SimpleSequence bookSq = getBooks(bookstoreLogicImpl, db);
+				List<Book> bookSq = getBooks(bookstoreLogicImpl);
 				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
@@ -392,9 +392,9 @@ public class BookstoreServlet extends HttpServlet {
 
 	}
 	
-	public SimpleSequence getBooks(BookstoreLogicImpl bli, DefaultObjectWrapperBuilder db) {
-		SimpleSequence sq = bli.getBook(db);
-		return  sq;
+	public <T> List<T> getBooks(BookstoreLogicImpl bli) {
+		List<T> sq = bli.getBook();
+		return sq;
 	}
 
 }

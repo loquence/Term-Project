@@ -1,5 +1,6 @@
 package persistlayer;
 
+import objectlayer.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -178,6 +179,40 @@ public class DbAccessImpl {
 		
 		disconnect(c);
 		return sq;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected static <T> List<T> getList(String sql, ObjectType o){
+		Connection c = connect();
+		ResultSet rs = retrieve(sql, c);
+		
+		List<T> ls = new ArrayList<T>();
+		try {
+		switch(o) {
+			case Book:
+				Book b;
+				
+				while(rs.next()){
+					
+					b = new Book(rs.getString("isbn"),rs.getString("title"),rs.getString("category"),rs.getString("author"),rs.getInt("edition"),rs.getString("publisher"), rs.getInt("pub_year"),
+							rs.getInt("quantity"), rs.getString("cover"), rs.getDouble("selling_price"), rs.getDouble("buying_price"),rs.getInt("min_thresh"));
+					b.setId(rs.getInt("book_id"));
+					ls.add((T) b);
+				}
+				break;
+			case User:
+				break;
+			case Cart:
+				break;
+			case Promotion:
+				break;
+		}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return ls;
 		
 	}
 	

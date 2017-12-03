@@ -17,10 +17,31 @@ public class Book {
 	private double sellingPrice;
 	private double buyingPrice;
 	private int minThreshold;
+	private int id;
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setSellingPrice(double sellingPrice) {
+		this.sellingPrice = sellingPrice;
+	}
+
+	public void setBuyingPrice(double buyingPrice) {
+		this.buyingPrice = buyingPrice;
+	}
+
+	public Book() {
+		
+	}
 	
 	public Book(String iSBN, String title, String genre, String author, int edition, String publisher, int publicationYear,
 			int quantity, /*int rating,*/ String cover, double sellingPrice, double buyingPrice, int minThreshold) {
-		super();
+		
 		ISBN = iSBN;
 		this.title = title;
 		this.genre = genre;

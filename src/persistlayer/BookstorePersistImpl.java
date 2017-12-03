@@ -2,6 +2,8 @@ package persistlayer;
 import objectlayer.*;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleSequence;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Class that calls the DbAccessImpl methods to access the database
  * Called by classes in the Object Layer
@@ -112,9 +114,9 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.create(sql);
 	}
 	
-	public SimpleSequence getBook(DefaultObjectWrapperBuilder db) {
-		String sql = "Select cover,title,author,selling_price,book_id from book;";
-		return DbAccessImpl.getSequence(sql,db);
+	public <T> List<T> getBook() {
+		String sql = "Select * from book;";
+		return DbAccessImpl.getList(sql,ObjectType.Book);
 	}
 	
 	

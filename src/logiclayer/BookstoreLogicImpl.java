@@ -4,6 +4,8 @@ import persistlayer.BookstorePersistImpl;
 import objectlayer.*;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleSequence;
+import java.util.ArrayList;
+import java.util.List;
 public class BookstoreLogicImpl {
 	private BookstorePersistImpl bookstorePersist;
 	
@@ -23,8 +25,8 @@ public class BookstoreLogicImpl {
 		return bookstorePersist.checkCode(code);
 	}
 	
-	public SimpleSequence getBook(DefaultObjectWrapperBuilder db) {
-		return bookstorePersist.getBook(db);
+	public <T> List<T> getBook() {
+		return bookstorePersist.getBook();
 	}
 	
 	
