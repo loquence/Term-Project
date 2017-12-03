@@ -298,6 +298,12 @@ public class BookstoreServlet extends HttpServlet {
 			 * checks if profile submits a request
 			 * Currently nothing is implemented for the profile form
 			 */
+			if (page.equals("goHome")) {
+				root.put("user", session.getAttribute("fname"));
+				root.put("type", session.getAttribute("type"));
+				root.put("bookSq", getBooks(bookstoreLogicImpl));
+				template="homepage.html";
+			}
 			if (page.equals("profile")) {
 				template = "profile.html";
 				processor.processTemplate(template, root, request, response);
@@ -393,7 +399,7 @@ public class BookstoreServlet extends HttpServlet {
 	}
 	
 	public <T> List<T> getBooks(BookstoreLogicImpl bli) {
-		List<T> sq = bli.getBook();
+		List<T> sq = bli.getBook(ObjectType.Book);
 		return sq;
 	}
 

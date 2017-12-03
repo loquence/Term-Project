@@ -25,8 +25,8 @@ public class BookstoreLogicImpl {
 		return bookstorePersist.checkCode(code);
 	}
 	
-	public <T> List<T> getBook() {
-		return bookstorePersist.getBook();
+	public <T> List<T> getBook(ObjectType o) {
+		return bookstorePersist.getBook(o);
 	}
 	
 	

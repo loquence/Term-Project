@@ -114,7 +114,7 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.create(sql);
 	}
 	
-	public <T> List<T> getBook() {
+	public <T> List<T> getBook(ObjectType o) {
 		String sql = "Select * from book;";
 		return DbAccessImpl.getList(sql,ObjectType.Book);
 	}
