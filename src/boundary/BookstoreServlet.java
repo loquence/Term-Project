@@ -293,9 +293,7 @@ public class BookstoreServlet extends HttpServlet {
 		 * redirects to the index page
 		 */
 		HttpSession session = request.getSession(false);
-		if (page.equals("goHome") && session == null) {
-			
-		}
+
 		if (session != null) {
 			/*
 			 * checks if profile submits a request
@@ -372,7 +370,7 @@ public class BookstoreServlet extends HttpServlet {
 			
 		}
 		else {
-			template="error.html";
+			template="..\\..\\index.html";
 		}
 		processor.processTemplate(template, root, request, response);
 	}
