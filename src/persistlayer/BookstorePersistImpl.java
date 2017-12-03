@@ -80,6 +80,7 @@ public class BookstorePersistImpl {
 		String update = "UPDATE users SET status='" + u.getStatus() + "' WHERE email='" + u.getEmail() +  "';";
 		String delete = "DELETE from user_verification_code WHERE email='" + u.getEmail() + "';";
 		String sql = "SELECT * FROM users WHERE email=\"" + u.getEmail() + "\";";
+		
 		String f = DbAccessImpl.getString(sql,"fname");
 		String l = DbAccessImpl.getString(sql, "lname");
 		String c = DbAccessImpl.getString(checkCode,"code");
@@ -87,12 +88,10 @@ public class BookstorePersistImpl {
 		
 		if(c != null) {
 			if(c.equals(code)) {
+				
 				DbAccessImpl.update(update);
 				DbAccessImpl.update(delete);
-				u.setFname(f);
-				u.setLname(l);
-				u.setStatus(Status.VERIFIED);
-				u.setType(t);
+				u = DbAccessImpl.getObject(sql,ObjectType.User);
 				return 1;
 			}
 			else {

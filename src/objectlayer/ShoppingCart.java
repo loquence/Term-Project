@@ -5,6 +5,11 @@ public class ShoppingCart {
 	private int customerID;
 	private double totalPrice;
 	
+	public ShoppingCart(int customerId, double totalPrice) {
+		this.customerID = customerId;
+		this.totalPrice = totalPrice;
+	}
+	
 	public int getCustomerID() {
 		return customerID;
 	}

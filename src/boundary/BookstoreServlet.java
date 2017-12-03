@@ -314,9 +314,8 @@ public class BookstoreServlet extends HttpServlet {
 			if(session.getAttribute("type").equals(UserType.ADMIN)) {
 				Admin a = new Admin("","","","",Status.VERIFIED);
 				root.put("user", session.getAttribute("fname"));
+				root.put("type", a.getType());
 				if (page.equals("addBook")) {
-					
-					
 					//attempting to add book
 					String title = request.getParameter("title");
 					String author = request.getParameter("author");
@@ -412,5 +411,7 @@ public class BookstoreServlet extends HttpServlet {
 		List<T> sq = bli.getBook(ObjectType.Book);
 		return sq;
 	}
+	
+	
 
 }

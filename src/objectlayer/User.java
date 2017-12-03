@@ -13,6 +13,13 @@ public class User {
 	private BookstorePersistImpl bookstorePersist;
 	private UserType type;
 	private Status status;
+	private int id;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public User (String fname, String lname, String email, String pwd, Status status, UserType type) {
 		this.fname = fname;
 		this.lname = lname;

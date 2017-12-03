@@ -202,10 +202,27 @@ public class DbAccessImpl {
 				}
 				break;
 			case User:
+				User u;
+				while(rs.next()) {
+					u = new User(rs.getString("fname"),rs.getString("lname"),rs.getString("email"),rs.getString("password"),Status.valueOf(rs.getString("status")),UserType.valueOf(rs.getString("type")));
+					u.setId(rs.getInt("id"));
+					ls.add((T) u);
+				}
 				break;
 			case Cart:
+				ShoppingCart sc;
+				while(rs.next()) {
+					sc = new ShoppingCart(rs.getInt("cart_id"),rs.getDouble("totalPrice"));
+					ls.add((T) sc);
+				}
 				break;
 			case Promotion:
+				Promotion p;
+				while(rs.next()) {
+					p = new Promotion(rs.getString("code"),rs.getDouble("percentage"),rs.getDate("expiration"));
+					p.setId(rs.getInt("id"));
+					ls.add((T) p);
+				}
 				break;
 		}
 		}catch(SQLException e) {
@@ -214,6 +231,48 @@ public class DbAccessImpl {
 		
 		return ls;
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T getObject(String sql, ObjectType o) {
+		Connection c = connect();
+		ResultSet rs = retrieve(sql, c);
+		
+		try {
+			switch(o) {
+			case Book:
+				Book b = null;
+				while(rs.next()) {
+					b = new Book(rs.getString("isbn"),rs.getString("title"),rs.getString("category"),rs.getString("author"),rs.getInt("edition"),rs.getString("publisher"), rs.getInt("pub_year"),
+							rs.getInt("quantity"), rs.getString("cover"), rs.getDouble("selling_price"), rs.getDouble("buying_price"),rs.getInt("min_thresh"));
+					b.setId(rs.getInt("book_id"));
+				}
+				return (T) b;
+			case User:
+				User u = null;
+				while(rs.next()) {
+					u = new User(rs.getString("fname"),rs.getString("lname"),rs.getString("email"),rs.getString("password"),Status.valueOf(rs.getString("status")),UserType.valueOf(rs.getString("type")));
+					u.setId(rs.getInt("id"));
+				}
+				return (T) u;
+			case Cart:
+				ShoppingCart sc = null;
+				while(rs.next()) {
+					sc = new ShoppingCart(rs.getInt("cart_id"),rs.getDouble("totalPrice"));
+				}
+				return (T) sc;
+			case Promotion:
+				Promotion p = null;
+				while(rs.next()) {
+					p = new Promotion(rs.getString("code"),rs.getDouble("percentage"),rs.getDate("expiration"));
+					p.setId(rs.getInt("id"));
+				}
+				return (T) p;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 
