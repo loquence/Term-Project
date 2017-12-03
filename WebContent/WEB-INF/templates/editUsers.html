@@ -36,9 +36,18 @@
             <tbody>
             <#if userSq??>
             <#list userSq as userSq>
-            <#if userSq?index % 6 == 0><tr></#if>
-                <td>${userSq}      <#if userSq?index%6=5><form method="post" action="BookstoreServlet" style="display:inline"><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button><input type="hidden" name="page" value="editUserPage"></form></#if>
-            
+            	<tr onclick="document.getElementById('${userSq.id?html}').submit()">
+            	<td>${userSq.id}</td>
+            	<td>${userSq.fname}</td>
+            	<td>${userSq.lname}</td>
+            	<td>${userSq.email}</td>
+            	<td>${userSq.type}</td>
+            	<td>${userSq.status}</td>
+            	<form action="BookstoreServlet" method="POST" id="${userSq.id?html}">
+            		<input type="hidden" name="page" value="editUserForm">
+            		<input type="hidden" name="editUserId" value="${userSq.id?html}">
+            	</form>
+            	<tr>
             </#list>
             </#if>
             </tbody>

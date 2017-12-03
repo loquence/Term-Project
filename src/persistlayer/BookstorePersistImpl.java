@@ -81,10 +81,8 @@ public class BookstorePersistImpl {
 		String delete = "DELETE from user_verification_code WHERE email='" + u.getEmail() + "';";
 		String sql = "SELECT * FROM users WHERE email=\"" + u.getEmail() + "\";";
 		
-		String f = DbAccessImpl.getString(sql,"fname");
-		String l = DbAccessImpl.getString(sql, "lname");
 		String c = DbAccessImpl.getString(checkCode,"code");
-		UserType t = UserType.valueOf(DbAccessImpl.getString(sql, "type"));
+
 		
 		if(c != null) {
 			if(c.equals(code)) {
@@ -102,9 +100,9 @@ public class BookstorePersistImpl {
 		return -1;
 	}
 	
-	public SimpleSequence getUsers(DefaultObjectWrapperBuilder db) {
-		String sql = "Select id,fname,lname,email,type,status FROM users where type!='" +UserType.ADMIN + "';";
-		return DbAccessImpl.getSequence(sql, db);
+	public <T> List<T> getUsers() {
+		String sql = "Select * FROM users where type!='" +UserType.ADMIN + "';";
+		return DbAccessImpl.getList(sql, ObjectType.User);
 	}
 	
 	public int addBook(Book b) {

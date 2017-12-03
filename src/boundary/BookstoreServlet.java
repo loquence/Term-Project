@@ -349,7 +349,7 @@ public class BookstoreServlet extends HttpServlet {
 					
 				}
 				if (page.equals("editUsers")) {
-					SimpleSequence userSq = a.getUsers(db);
+					List<User>userSq = a.getUsers();
 					root.put("userSq", userSq);
 					template="editUsers.html";
 				}

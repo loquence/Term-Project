@@ -1,6 +1,7 @@
 package objectlayer;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleSequence;
+import java.util.List;
 public class Admin extends User {
 
 	
@@ -9,8 +10,8 @@ public class Admin extends User {
 		super(fname, lname, email, pwd, status, UserType.ADMIN);
 	}
 	
-	public SimpleSequence getUsers(DefaultObjectWrapperBuilder db) {
-		return getPersist().getUsers(db);
+	public <T> List<T> getUsers() {
+		return getPersist().getUsers();
 	}
 	
 	public int addBook(Book b) {
