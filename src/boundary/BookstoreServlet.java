@@ -217,6 +217,7 @@ public class BookstoreServlet extends HttpServlet {
 						session.setAttribute("lname", u.getLname());
 						session.setAttribute("type", u.getType());
 					}
+					
 						root.put("email", u.getEmail());
 						template="verify.html";
 						
@@ -244,6 +245,8 @@ public class BookstoreServlet extends HttpServlet {
 			int check = u.login();
 			if (check > 0 && u.getStatus().equals(Status.VERIFIED)) {
 				loadHomepage(session,template,root,u);
+				SimpleSequence bookSq = getBooks(bookstoreLogicImpl, db);
+				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
 			else if (!u.getStatus().equals(Status.VERIFIED)) {

@@ -113,7 +113,7 @@ public class BookstorePersistImpl {
 	}
 	
 	public SimpleSequence getBook(DefaultObjectWrapperBuilder db) {
-		String sql = "Select cover, book_id,title,author,selling_price from book;";
+		String sql = "Select cover,title,author,selling_price,book_id from book;";
 		return DbAccessImpl.getSequence(sql,db);
 	}
 	

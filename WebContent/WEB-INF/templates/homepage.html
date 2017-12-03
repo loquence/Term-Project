@@ -21,30 +21,44 @@
         <#include "navbar.html">
         <div class="container-fluid">
             
-            
-           
+           <#if bookSq??>
+           <#list bookSq as bq>
+           <#if bq?index%15==0>
             <div class="col-md-3">
-            
+            </#if>
+            <#if bq?index%5==0>
                         <div class="media hoverDiv">
                             <div class="media-left">   
-                            <img width="150" height="150" src="http://pngimg.com/uploads/book/book_PNG2116.png?i=1">
+                            <img width="150" height="150" src="${bq?html}">
                             </div> 
                             <div class="media-body">
-                                <p>Book One</p>
-                                <p>Author One</p>
-                            <p>$5.00</p>
+                            </#if>
+                            <#if bq?index%5==1>
+                                <p>${bq}</p>
+                            </#if>
+                            <#if bq?index%5==2>    
+                                <p>${bq}</p>
+                            </#if>
+                            <#if bq?index%5==3>
+                            <p>$${bq}</p>
+                            </#if>
+                            <#if bq?index%5==4>
                             <form action="BookstoreServlet" method="post">
                            
                             <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span></button></p>
                             <input type="hidden" name="page" value="addCart">
+                            <input type="hidden" name="bookId" value="${bq?html}">
                             </form>
                             </div>   
                         </div>
+                        </#if>
+                    <#if bq?index%15==14>    
                 	</div>
-                
+                	</#if>
+                </#list>
                 </#if>
                 <#if type == "ADMIN">
-                <div class="col-md-3 col-md-offset-6"  style="background:lightgray">
+                <div class="col-md-3 pull-right"  style="background:lightgray">
                     <form action="BookstoreServlet" method="POST">
                     <p><button type="submit" class="btn btn-default">Manage Users</button></p>
                     <input type="hidden" name="page" value="editUsers">
