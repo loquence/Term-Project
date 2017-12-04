@@ -234,11 +234,14 @@ public class DbAccessImpl {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T getObject(String sql, ObjectType o) {
+	public static <T> T getObject(String sql,  ObjectType o, Boolean CustomerFlag) {
 		Connection c = connect();
 		ResultSet rs = retrieve(sql, c);
 		
+		
 		try {
+			
+			
 			switch(o) {
 			case book:
 				Book b = null;
@@ -268,6 +271,21 @@ public class DbAccessImpl {
 					p.setId(rs.getInt("id"));
 				}
 				return (T) p;
+			case customer:
+				Customer cu = null;
+				while(rs.next()) {
+					cu = new Customer(rs.getString("fname"),rs.getString("lname"),rs.getString("email"),rs.getString("password"),Status.valueOf(rs.getString("status")));
+					if(CustomerFlag) {
+					cu.setNumber(rs.getString("phone_number"));
+					cu.setAddress(rs.getString("address"));
+					cu.setCardExpDate(rs.getDate("card_exp_date"));
+					cu.setCardType(rs.getString("card_type"));
+					cu.setCardNumber(rs.getString("card_number"));
+					}
+					cu.setId(rs.getInt("id"));
+				}
+				return (T) cu;
+				
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();

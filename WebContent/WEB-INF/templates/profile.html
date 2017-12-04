@@ -26,12 +26,15 @@
                     <#if u.type == type>
                     <p><a href="#">Edit Profile</a></p>
                     </#if>
+                   
                 </div>
+                 <#if type == "ADMIN">
+                    
+                    	<button type="button" class="btn btn-default pull-right"><span class="glyphicon glyphicon-lock"> Suspend</span></button>
+                    	<button type="button" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"> Delete</span></button>
+                    
+                    </#if>
             </div>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
             <div class="row">
                 <div class="col-md-4 ">
                 	<fieldset>
@@ -39,8 +42,13 @@
                     <p>Name: ${u.fname}</p>
                     <p>Surname: ${u.lname}</p>
                     <p>Email: ${u.email}</p>
-                    <p>Address: </p>
-                    <p>Phone Number: </p>
+                    <#if u.type == type>
+                    <p>Address: <#if u.address??>${u.address}</#if></p>
+                    <p>Phone Number: <#if u.number??>${u.number}</#if></p>
+                    <p>Card Type: <#if u.cardType??>${u.cardType}</#if></p>
+                    <p>Card Number: <#if u.cardNumber??>${u.cardNumber}</#if></p>
+                    <p>Card Expiration Date: <#if u.cardExpDate??>${u.cardExpDate}</#if></p>
+                    </#if>
                     </fieldset>
                 </div>
             </div>

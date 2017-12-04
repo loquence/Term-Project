@@ -307,7 +307,7 @@ public class BookstoreServlet extends HttpServlet {
 			root.put("user", session.getAttribute("fname"));
 			root.put("type", session.getAttribute("type"));
 			root.put("id", session.getAttribute("id"));
-			User us = new User("","","","",null,null);
+			Customer u = new Customer("","","","",null);
 			
 			
 			if (page.equals("viewBook")) {
@@ -326,8 +326,8 @@ public class BookstoreServlet extends HttpServlet {
 				int id = (int)session.getAttribute("id");
 				String s = "" + id;
 				System.out.println(s);
-				us = us.getUser(s);
-				root.put("u", us);
+				u = u.getUser(s);
+				root.put("u", u);
 				template = "profile.html";
 				
 				
@@ -383,8 +383,8 @@ public class BookstoreServlet extends HttpServlet {
 				}
 				if (page.equals("editUserForm")) {
 					String id = request.getParameter("editUserId");
-					User u = a.getUser(id);
-					root.put("u", u);
+					User us = a.getUser(id);
+					root.put("u", us);
 					template="profile.html";
 				}
 				

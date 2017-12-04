@@ -23,7 +23,7 @@ public class BookstorePersistImpl {
 		String sql2 = "SELECT * from users where email='" + u.getEmail() + "';";
 		int check = DbAccessImpl.create(sql);
 		if (check != 0) {
-			u = DbAccessImpl.getObject(sql2, ObjectType.users);
+			u = DbAccessImpl.getObject(sql2, ObjectType.users,false);
 		}
 		return DbAccessImpl.create(sql);
 	}
@@ -46,7 +46,7 @@ public class BookstorePersistImpl {
 		
 		if(p != null) {
 			if (pwd.equals(p)) {
-				return DbAccessImpl.getObject(sql,ObjectType.users);
+				return DbAccessImpl.getObject(sql,ObjectType.users,false);
 				/*Status s = Status.valueOf(DbAccessImpl.getString(sql, "status"));
 				UserType t = UserType.valueOf(DbAccessImpl.getString(sql, "type"));
 				u.setFname(f);
@@ -96,7 +96,7 @@ public class BookstorePersistImpl {
 				
 				DbAccessImpl.update(update);
 				DbAccessImpl.update(delete);
-				return DbAccessImpl.getObject(sql, ObjectType.users);
+				return DbAccessImpl.getObject(sql, ObjectType.users,false);
 				
 			}
 		}
@@ -121,8 +121,25 @@ public class BookstorePersistImpl {
 	}
 	
 	public <T> T getObject(String column, ObjectType o, String value) {
-		String sql = "Select * from " + o + " where " + column + "='" + value + "';";
-		return DbAccessImpl.getObject(sql, o);
+		
+			String sql = "Select * from " + o + " where " + column + "='" + value + "';";
+		return DbAccessImpl.getObject(sql, o,false);
+	}
+	
+	public Customer getCustomer(String id) {
+		String sql = "Select * from user_info where user_id='" + id + "';";
+		String test = DbAccessImpl.getString(sql, "address");
+		String sql2;
+		Boolean flag = false;
+		if (test == null) {
+			sql2 = "SELECT * from users where id='" + id+ "';";
+			
+		}
+		else {
+			sql2 = "SELECT * from users join user_info on users.id=user_info.user_id where users.id='" + id + "';";
+			flag = true;
+		}
+		return DbAccessImpl.getObject(sql2, ObjectType.customer, flag);
 	}
 	
 	

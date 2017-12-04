@@ -1,6 +1,6 @@
 package objectlayer;
 
 public enum ObjectType {
-	book,users,cart,promotion;
+	book,users,cart,promotion,customer;
 
 }
