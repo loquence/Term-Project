@@ -389,10 +389,10 @@ public class BookstoreServlet extends HttpServlet {
 				}
 				
 				if(page.equals("suspendUser")) {
-					
+					String id = request.getParameter("suspendUserId");
 				}
 				if (page.equals("deleteUser")) {
-					
+					String id= request.getParameter("deleteUserId");
 				}
 				
 			}
