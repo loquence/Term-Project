@@ -15,7 +15,16 @@
     <script src="script.js"></script>
        
     <title>User Profile</title>
-    <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/>  
+    <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/> 
+    
+    <script>
+		function clickedSuspend(e){
+			if(!confirm('Are you sure you want to suspend user ${u.email?html}?'))e.preventDefault();
+			}
+		function clickedDelete(e){
+			if(!confirm('Are you sure you want to delete user ${u.email?html}? This action cannot be undone.'))e.preventDefault();
+			}
+    </script> 
     </head>
     <body style="background:gray">
         <#include "navbar.html">
@@ -29,9 +38,16 @@
                    
                 </div>
                  <#if type == "ADMIN">
-                    
-                    	<button type="button" class="btn btn-default pull-right"><span class="glyphicon glyphicon-lock"> Suspend</span></button>
-                    	<button type="button" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"> Delete</span></button>
+                    <form action="BookstoreServlet" method="post" onclick="clickedSuspend(event)">
+                    	<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-lock"> Suspend</span></button>
+                    	<input type="hidden" name="page" value="suspendUser">
+                    	<input type="hidden" name="suspendUserId" value="${u.id?html}">
+                    </form>
+                    <form action="BookstoreServlet" method="post" onclick="clickedDelete(event)">
+                    	<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"> Delete</span></button>
+                    	<input type="hidden" name="page" value="deleteUser">
+                    	<input type="hidden" name="deleteUserId" value="${u.id?html}">
+                    </form>
                     
                     </#if>
             </div>

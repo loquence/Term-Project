@@ -388,6 +388,13 @@ public class BookstoreServlet extends HttpServlet {
 					template="profile.html";
 				}
 				
+				if(page.equals("suspendUser")) {
+					
+				}
+				if (page.equals("deleteUser")) {
+					
+				}
+				
 			}
 			if (page.equals("logout")) {
 				session.invalidate();
