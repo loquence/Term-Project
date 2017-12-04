@@ -88,7 +88,7 @@ public class User {
 	public User getUser(String id) {
 		return getPersist().getObject("id",ObjectType.users,id);
 	}
-	public int createUser() {
+	public User createUser() {
 		return getPersist().addUser(this);
 	}
 	

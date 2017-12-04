@@ -18,14 +18,14 @@ public class BookstorePersistImpl {
 	 * @param u
 	 * @return
 	 */
-	public int addUser(User u) {
+	public User addUser(User u) {
 		String sql = "INSERT INTO users (fname,lname,email,password,type,status) VALUES" + "('"+u.getFname()+"','"+u.getLname()+"','"+ u.getEmail() + "','"+ u.getPwd() +"','"+u.getType() +"','"+u.getStatus()+"');" ;
 		String sql2 = "SELECT * from users where email='" + u.getEmail() + "';";
 		int check = DbAccessImpl.create(sql);
 		if (check != 0) {
-			u = DbAccessImpl.getObject(sql2, ObjectType.users,false);
+			return DbAccessImpl.getObject(sql2, ObjectType.users,false);
 		}
-		return DbAccessImpl.create(sql);
+		return null;
 	}
 	
 	/**
@@ -87,7 +87,6 @@ public class BookstorePersistImpl {
 		String update = "UPDATE users SET status='" + u.getStatus() + "' WHERE email='" + u.getEmail() +  "';";
 		String delete = "DELETE from user_verification_code WHERE email='" + u.getEmail() + "';";
 		String sql = "SELECT * FROM users WHERE email=\"" + u.getEmail() + "\";";
-		
 		String c = DbAccessImpl.getString(checkCode,"code");
 
 		
@@ -96,7 +95,10 @@ public class BookstorePersistImpl {
 				
 				DbAccessImpl.update(update);
 				DbAccessImpl.update(delete);
-				return DbAccessImpl.getObject(sql, ObjectType.users,false);
+				User ret = DbAccessImpl.getObject(sql, ObjectType.users,false);
+				String cart = "INSERT into cart (cart_id) VALUES" + "('" + ret.getId() + "');";
+				DbAccessImpl.update(cart);
+				return ret;
 				
 			}
 		}

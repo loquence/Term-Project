@@ -161,8 +161,8 @@ public class BookstoreServlet extends HttpServlet {
 			//Else the email is not in database, and is available
 			else {
 				int check = 0;
-				int test = u.createUser();
-				if (test== -1) {
+				User test = u.createUser();
+				if (test== null) {
 					root.put("database", true);
 					processor.processTemplate("signup.html", root, request, response);
 				}
@@ -320,6 +320,10 @@ public class BookstoreServlet extends HttpServlet {
 			root.put("id", session.getAttribute("id"));
 			Customer u = new Customer("","","","",null);
 			
+			if(page.equals("addToCart")) {
+				String id =request.getParameter("bookId");
+				u.setId((int)session.getAttribute("id"));
+			}
 			
 			if (page.equals("viewBook")) {
 				String id = request.getParameter("viewBookId");
