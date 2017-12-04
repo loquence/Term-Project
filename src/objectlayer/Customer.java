@@ -36,9 +36,7 @@ public class Customer extends User {
 		this.number = number;
 	}
 
-	public int createUser() {
-		return getPersist().addUser(this);
-	}
+	
 	public int addCode(String code) {
 		return getPersist().addCode(this,code);
 	}

@@ -20,6 +20,10 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public User() {
+		
+	}
 	public User (String fname, String lname, String email, String pwd, Status status, UserType type) {
 		this.fname = fname;
 		this.lname = lname;
@@ -59,7 +63,7 @@ public class User {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
-	public int login() {
+	public User login() {
 		return bookstorePersist.login(this);
 	}
 	public BookstorePersistImpl getPersist() {
@@ -77,13 +81,15 @@ public class User {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	public int verifyCode(String code) {
+	public User verifyCode(String code) {
 		return bookstorePersist.verifyCode(this, code);
 	}
-	/*
-	public int createUser() {		
-		return bookstorePersist.addUser(this);
+	
+	public User getUser(String id) {
+		return getPersist().getObject("id",ObjectType.users,id);
 	}
-	*/
+	public int createUser() {
+		return getPersist().addUser(this);
+	}
 	
 }

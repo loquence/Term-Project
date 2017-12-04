@@ -19,11 +19,11 @@
     </head>
     <body>
         <#include "navbar.html">
-        <div class="container-fluid">
+        <div class="container">
            <#list bookSq as bq>
            		<#if bq?index< 12 >
-           		<#if bq?index%3==0>
-           		<div class="col-md-3">
+           		<#if bq?index%4==0>
+           		<div class="col-md-4">
            		</#if> 
            			<div class="media hoverDiv" onclick="document.getElementById('${bq.id?html}').submit()">
            				<form action="BookstoreServlet" method="POST" id="${bq.id?html}">
@@ -48,7 +48,7 @@
                          </#if>
                      </div>    
                 	</div>
-                <#if bq?index%3==2>	
+                <#if bq?index%4==3>	
                 </div>
                 </#if>
                 <#else>

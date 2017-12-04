@@ -31,7 +31,7 @@
                         </form>
                         <ul class="nav navbar-nav navbar-left">
                             <li>
-                            <a href="javascript:{}" onclick="document.getElementById('adv').submit()"><span class="glyphicon glyphicon-search"></span>Advanced Search</a>
+                            <a href="javascript:{}" onclick="document.getElementById('adv').submit()"><span class="glyphicon glyphicon-search"></span> Advanced Search</a>
                             <form action="BookstoreServlet" method="POST" id="adv">
                             		<input type="hidden" name="page" value="adv">
                             	</form>
@@ -41,7 +41,13 @@
                         	<#if type??>
                         		<#if type =="CUSTOMER">
                             <li><a href="#"><span class="glyphicon glyphicon-shopping-cart">  Cart</span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-user"></span>  Profile</a></li>
+                            <li>
+                            <a href="javascript:{}" onclick="document.getElementById('profileForm').submit()"><span class="glyphicon glyphicon-user"></span>  Profile</a>
+                            <form action="BookstoreServlet" method="POST" id="profileForm">
+                            	<input type="hidden" name="page" value="profile">
+                            	<input type="hidden" name="userId" value="${id?html}">
+                            </form>
+                            </li>
                             </#if>
                             </#if>
                             <#if type??>

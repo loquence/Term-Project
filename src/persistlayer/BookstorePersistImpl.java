@@ -18,8 +18,13 @@ public class BookstorePersistImpl {
 	 * @param u
 	 * @return
 	 */
-	public int addUser(Customer u) {
+	public int addUser(User u) {
 		String sql = "INSERT INTO users (fname,lname,email,password,type,status) VALUES" + "('"+u.getFname()+"','"+u.getLname()+"','"+ u.getEmail() + "','"+ u.getPwd() +"','"+u.getType() +"','"+u.getStatus()+"');" ;
+		String sql2 = "SELECT * from users where email='" + u.getEmail() + "';";
+		int check = DbAccessImpl.create(sql);
+		if (check != 0) {
+			u = DbAccessImpl.getObject(sql2, ObjectType.users);
+		}
 		return DbAccessImpl.create(sql);
 	}
 	
@@ -30,7 +35,7 @@ public class BookstorePersistImpl {
 	 * @param u
 	 * @return
 	 */
-	public int login(User u) {
+	public User login(User u) {
 		String email = u.getEmail();
 		String pwd = u.getPwd();
 		String sql = "SELECT * FROM users WHERE email=\"" + email + "\";";
@@ -41,16 +46,18 @@ public class BookstorePersistImpl {
 		
 		if(p != null) {
 			if (pwd.equals(p)) {
-				Status s = Status.valueOf(DbAccessImpl.getString(sql, "status"));
+				return DbAccessImpl.getObject(sql,ObjectType.users);
+				/*Status s = Status.valueOf(DbAccessImpl.getString(sql, "status"));
 				UserType t = UserType.valueOf(DbAccessImpl.getString(sql, "type"));
 				u.setFname(f);
 				u.setStatus(s);
 				u.setType(t);
 				u.setLname(l);
-				return DbAccessImpl.getInt(sql, "id");
+				*/
+				
 			}
 		}
-		return -1;
+		return null;
 	}
 	
 	/**
@@ -75,7 +82,7 @@ public class BookstorePersistImpl {
 		return 1;
 	}
 	
-	public int verifyCode(User u, String code) {
+	public User verifyCode(User u, String code) {
 		String checkCode = "SELECT * FROM user_verification_code WHERE email=\'" + u.getEmail() + "\';";
 		String update = "UPDATE users SET status='" + u.getStatus() + "' WHERE email='" + u.getEmail() +  "';";
 		String delete = "DELETE from user_verification_code WHERE email='" + u.getEmail() + "';";
@@ -89,15 +96,12 @@ public class BookstorePersistImpl {
 				
 				DbAccessImpl.update(update);
 				DbAccessImpl.update(delete);
-				u = DbAccessImpl.getObject(sql,ObjectType.users);
-				return 1;
-			}
-			else {
-				u.setStatus(Status.UNVERIFIED);	
+				return DbAccessImpl.getObject(sql, ObjectType.users);
+				
 			}
 		}
 		
-		return -1;
+		return null;
 	}
 	
 	public <T> List<T> getUsers() {

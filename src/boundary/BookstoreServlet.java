@@ -216,7 +216,7 @@ public class BookstoreServlet extends HttpServlet {
 					 */
 					HttpSession session = request.getSession(true);//getting the current session on startup
 					synchronized(session) {
-						session.setAttribute("pwd",u.getPwd());
+						session.setAttribute("id",u.getId());
 						session.setAttribute("email", u.getEmail());
 						session.setAttribute("fname", u.getFname());
 						session.setAttribute("lname", u.getLname());
@@ -246,9 +246,9 @@ public class BookstoreServlet extends HttpServlet {
 			String pwd = request.getParameter("pwd");
 			User u = new User("","",email,pwd,Status.UNVERIFIED,UserType.CUSTOMER);
 			HttpSession session = request.getSession(true);//getting the current session on startup
-			session.setMaxInactiveInterval(1800);
-			int check = u.login();
-			if (check > 0 && u.getStatus().equals(Status.VERIFIED)) {
+			session.setMaxInactiveInterval(1800);//Valid for 1800 seconds
+			u = u.login();
+			if (u != null && u.getStatus().equals(Status.VERIFIED)) {
 				loadHomepage(session,template,root,u);
 				List<Book> bookSq = getBookList(bookstoreLogicImpl);
 				root.put("bookSq", bookSq);
@@ -272,11 +272,11 @@ public class BookstoreServlet extends HttpServlet {
 			String code = request.getParameter("code");
 			String email= request.getParameter("em");
 			User u = new User("","",email,"",Status.VERIFIED, UserType.CUSTOMER);
-			int check = u.verifyCode(code);
-			if(check == -1) {
+			u = u.verifyCode(code);
+			if(u == null) {
 				
 				response.setContentType("text/html");
-				response.getWriter().write(email + " "+ check);
+				response.getWriter().write(email + " ");
 			}
 			else {
 				//remove code from code thing here
@@ -304,30 +304,38 @@ public class BookstoreServlet extends HttpServlet {
 			 * checks if profile submits a request
 			 * Currently nothing is implemented for the profile form
 			 */
+			root.put("user", session.getAttribute("fname"));
+			root.put("type", session.getAttribute("type"));
+			root.put("id", session.getAttribute("id"));
+			User us = new User("","","","",null,null);
+			
+			
 			if (page.equals("viewBook")) {
 				String id = request.getParameter("viewBookId");
 				Book b = bookstoreLogicImpl.getBook("book_id", id);
 				root.put("book", b);
-				root.put("user", session.getAttribute("fname"));
-				root.put("type", session.getAttribute("type"));
+				
 				template="viewBook.html";
 			}
 			if (page.equals("goHome")) {
-				root.put("user", session.getAttribute("fname"));
-				root.put("type", session.getAttribute("type"));
+				
 				root.put("bookSq", getBookList(bookstoreLogicImpl));
 				template="homepage.html";
 			}
 			if (page.equals("profile")) {
+				int id = (int)session.getAttribute("id");
+				String s = "" + id;
+				System.out.println(s);
+				us = us.getUser(s);
+				root.put("u", us);
 				template = "profile.html";
-				processor.processTemplate(template, root, request, response);
+				
 				
 			}
 				
 			if(session.getAttribute("type").equals(UserType.ADMIN)) {
 				Admin a = new Admin("","","","",Status.VERIFIED);
-				root.put("user", session.getAttribute("fname"));
-				root.put("type", a.getType());
+				
 				if (page.equals("addBook")) {
 					//attempting to add book
 					String title = request.getParameter("title");
@@ -377,7 +385,7 @@ public class BookstoreServlet extends HttpServlet {
 					String id = request.getParameter("editUserId");
 					User u = a.getUser(id);
 					root.put("u", u);
-					template="editUserView.html";
+					template="profile.html";
 				}
 				
 			}
@@ -424,6 +432,7 @@ public class BookstoreServlet extends HttpServlet {
 		root.put("user", u.getFname());
 		root.put("type", u.getType());
 		synchronized(session) {
+			session.setAttribute("id", u.getId());
 			session.setAttribute("email", u.getEmail());
 			session.setAttribute("fname", u.getFname());
 			session.setAttribute("lname", u.getLname());
