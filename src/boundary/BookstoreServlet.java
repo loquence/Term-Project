@@ -100,7 +100,7 @@ public class BookstoreServlet extends HttpServlet {
 		 * creation of necessary variables that will be used later
 		 */
 		String page = request.getParameter("page");//gets page value of the given page
-		String template ="login.html";//default template page is currently login.html, can be changed later
+		String template="..\\..\\index.html";//default template page is currently login.html, can be changed later
 		DefaultObjectWrapperBuilder db = new DefaultObjectWrapperBuilder(processor.getCfg().getVersion());//object wrapper to be used for Freemarker Hashmap
 		SimpleHash root = new SimpleHash(db.build());//the hashmap
 		root.put("name", page);//putting name into the hashmap, currently not in use
@@ -123,6 +123,7 @@ public class BookstoreServlet extends HttpServlet {
 		 * Checks if page who sent post request is the signup page
 		 * Currently this form is being handled by an ajax call.
 		 */
+		
 		if (page.equals("signup")) {
 			
 			/*
@@ -297,7 +298,7 @@ public class BookstoreServlet extends HttpServlet {
 		 * redirects to the index page
 		 */
 		HttpSession session = request.getSession(false);
-
+		
 		if (session != null) {
 			/*
 			 * checks if profile submits a request
@@ -382,14 +383,18 @@ public class BookstoreServlet extends HttpServlet {
 			}
 			if (page.equals("logout")) {
 				session.invalidate();
-				template="signup.html";
+				
 				
 			}
 			
 			
 		}
-		else {
-			template="..\\..\\index.html";
+		if(page.equals("adv")) {
+			if(session!=null) {
+			root.put("user", session.getAttribute("fname"));
+			root.put("type", session.getAttribute("type"));
+			}
+			template="advancedSearch.html";
 		}
 		processor.processTemplate(template, root, request, response);
 	}
