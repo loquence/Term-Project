@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="style.css" type="text/css" rel="stylesheet" />
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script type="text/javascript"
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<title>Advanced Search</title>
+<link rel="shortcut icon" type="image/png"
+	href="http://weknowyourdreams.com/images/book/book-08.jpg" />
+</head>
+<body>
+	<div class="container">
+		<div class="col-md-6 col-md-offset-3" id="allInputs">
+			<form id="searchFrm" action="BookstoreServlet" method="post">
+				<fieldset>
+					<legend>Search by</legend>
+					<p>
+						<label></label> <select id="advancedSearch">
+							<option value="title">Title</option>
+							<option value="isbn">ISBN</option>
+							<option value="author">Author</option>
+							<option value="publisher">Publisher</option>
+							<option value="pubYear">Publication Year</option>
+							<option value="edition">Book Edition</option>
+							<option value="genre">Genre</option>
+							<option value="min">Minimum Threshold Price</option>
+						</select>
+					</p>
+					<div class="input-group">
+						<input type="text" class="form-control"
+							placeholder="Search Catalog">
+						<div class="input-group-btn">
+							<button type="submit" class="btn btn-default" value="listSearch.html">
+								<i class="glyphicon glyphicon-search"></i>
+							</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
