@@ -6,9 +6,7 @@
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
      id="WebApp_ID" version="2.5">
      <display-name>cs4050TermProject</display-name>
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
+    
     <servlet>
         <servlet-name>freemarker</servlet-name>
         <servlet-class>freemarker.ext.servlet.FreemarkerServlet</servlet-class>
@@ -46,7 +44,7 @@
 
     <servlet-mapping>
         <servlet-name>freemarker</servlet-name>
-        <url-pattern>*.ftl</url-pattern>
+        <url-pattern>*.html</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FreeMarketServletExample</servlet-name>

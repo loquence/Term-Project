@@ -37,12 +37,14 @@
                                 <p>${bq.title}</p>
                                 <p>${bq.author}</p>
                             <p>$${bq.sellingPrice}</p>
+                         <#if type??>
                          <#if type != "ADMIN">
                          <form action="BookstoreServlet" method="POST">
                          <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span></button></p>
                          <input type="hidden" name="page" value="addToCart">
                          <input type="hidden" name="bookId" value="${bq.id?html}">
                          </form>
+                         </#if>
                          </#if>
                      </div>    
                 	</div>

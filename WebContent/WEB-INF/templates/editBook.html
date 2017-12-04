@@ -4,7 +4,7 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <link href="editBook.css" type="text/css" rel="stylesheet"/>
+    
     
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -22,9 +22,9 @@
     
     <body>
     	<#include "navbar.html">
-		<div class="container">  
+		<div class="container-fluid">  
 			
-        	<table style ="width: 100%">
+        	<table style ="width: 100%" class="table table-hover table-condensed">
             	<tr>	
                 	<th>ISBN</th>
                 	<th>TITLE</th>
@@ -40,21 +40,27 @@
                 	<th>RATING</th>
                 	
             	</tr>
-            	<tr>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td>sample</td>
-                	<td><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button></td>
+            	<#list book as b>
+            	<tr onclick="document.getElementById('${b.id?html}').submit()">
+                	<td>${b.ISBN}</td>
+                	<td>${b.title}</td>
+                	<td>${b.genre}</td>
+                	<td>${b.author}</td>
+                	<td>${b.edition}</td>
+                	<td>${b.publisher}</td>
+                	<td>${b.publicationYear}</td>
+                	<td>${b.minThreshold}</td>
+                	<td>$${b.buyingPrice}</td>
+                	<td>$${b.sellingPrice}</td>
+                	<td>${b.cover}</td>
+                	<td>TEMP</td>
+                	<form action="BookstoreServlet" method="POST" id="${b.id?html}">
+                		<input type="hidden" name="page" value="editBookForm">
+                		<input type="hidden" name="editBookId" value="${b.id?html}">
+                	</form>
+                	
             	</tr>
+            	</#list>
         	</table>
         	</div>
         </div>

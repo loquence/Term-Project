@@ -78,9 +78,13 @@ public class BookstoreServlet extends HttpServlet {
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Gets the name parameter and stores it in page
-		String page = request.getParameter("name");
 		
-		response.setContentType("text/html;charset=UTF-8");
+		List<Book> b = getBookList(new BookstoreLogicImpl());
+		request.setAttribute("bookSq", b);
+
+        request.getRequestDispatcher("/WEB-INF/templates/homepage.html").forward(request, response);
+		
+		
 
  
 		
@@ -353,6 +357,8 @@ public class BookstoreServlet extends HttpServlet {
 					
 				}
 				if (page.equals("editBooks")) {
+					List<Book> b = getBookList(bookstoreLogicImpl);
+					root.put("book", b);
 					template="editBook.html";
 					
 				}
@@ -366,8 +372,11 @@ public class BookstoreServlet extends HttpServlet {
 					template="addBook.html";
 					
 				}
-				if (page.equals("editUsersForm")) {
-					int id = Integer.parseInt(request.getParameter("editUserId"));
+				if (page.equals("editUserForm")) {
+					String id = request.getParameter("editUserId");
+					User u = a.getUser(id);
+					root.put("u", u);
+					template="editUserView.html";
 				}
 				
 			}

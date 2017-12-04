@@ -18,5 +18,9 @@ public class Admin extends User {
 		return getPersist().addBook(b);
 	}
 	
+	public User getUser(String id) {
+		return getPersist().getObject("id",ObjectType.users,id);
+	}
+	
 	
 }
