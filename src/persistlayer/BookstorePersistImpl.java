@@ -142,6 +142,16 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.getObject(sql2, ObjectType.customer, flag);
 	}
 	
+	public int updateUser(String id, Status s) {
+		String sql="UPDATE users SET status='" + s + "' WHERE id='" + id + "';";
+		return DbAccessImpl.update(sql);
+	}
+	
+	public int deleteUser(String id) {
+		String sql="DELETE from users where id='" + id + "';";
+		return DbAccessImpl.update(sql);
+	}
+	
 	
 	
 }

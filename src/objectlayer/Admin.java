@@ -18,7 +18,12 @@ public class Admin extends User {
 		return getPersist().addBook(b);
 	}
 	
-	
+	public int updateUser(String id, Status s) {
+		return getPersist().updateUser(id,s);
+	}
+	public int deleteUser(String id) {
+		return getPersist().deleteUser(id);
+	}
 	
 	
 }

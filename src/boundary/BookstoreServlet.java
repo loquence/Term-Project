@@ -49,7 +49,9 @@ public class BookstoreServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private TemplateProcessor processor;
     private static String templateDir = "/WEB-INF/templates"; 
-    
+    private BookstoreLogicImpl bookstoreLogicImpl;
+    DefaultObjectWrapperBuilder db;
+    SimpleHash root;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -69,6 +71,9 @@ public class BookstoreServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		processor = new TemplateProcessor(templateDir, getServletContext());
+		db = new DefaultObjectWrapperBuilder(processor.getCfg().getVersion());//object wrapper to be used for Freemarker Hashmap
+		root = new SimpleHash(db.build());//the hashmap
+		bookstoreLogicImpl = new BookstoreLogicImpl();
 	}
 
 	/**
@@ -101,8 +106,7 @@ public class BookstoreServlet extends HttpServlet {
 		 */
 		String page = request.getParameter("page");//gets page value of the given page
 		String template="..\\..\\index.html";//default template page is currently login.html, can be changed later
-		DefaultObjectWrapperBuilder db = new DefaultObjectWrapperBuilder(processor.getCfg().getVersion());//object wrapper to be used for Freemarker Hashmap
-		SimpleHash root = new SimpleHash(db.build());//the hashmap
+		
 		root.put("name", page);//putting name into the hashmap, currently not in use
 		
 		RandomStringGen rg = new RandomStringGen();
@@ -245,23 +249,30 @@ public class BookstoreServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			String pwd = request.getParameter("pwd");
 			User u = new User("","",email,pwd,Status.UNVERIFIED,UserType.CUSTOMER);
-			HttpSession session = request.getSession(true);//getting the current session on startup
-			session.setMaxInactiveInterval(1800);//Valid for 1800 seconds
+			
 			u = u.login();
-			if (u != null && u.getStatus().equals(Status.VERIFIED)) {
-				loadHomepage(session,template,root,u);
-				List<Book> bookSq = getBookList(bookstoreLogicImpl);
-				root.put("bookSq", bookSq);
-				template="homepage.html";
-			}
-			else if (!u.getStatus().equals(Status.VERIFIED)) {
-				template="verify.html";
-				//processor.processTemplate(template, root, request, response);
-			}
-			else {
-				response.setContentType("text/html");
-				response.getWriter().write("" + u.getStatus());
-				//processor.processTemplate("../../signin.html", root, request, response);
+			
+			
+			if (u != null ) {
+				if(u.getStatus().equals(Status.VERIFIED)) {
+					
+					HttpSession session = request.getSession(true);//getting the current session on startup
+					session.setMaxInactiveInterval(1800);//Valid for 1800 seconds
+					loadHomepage(session,template,root,u);
+					List<Book> bookSq = getBookList(bookstoreLogicImpl);
+					root.put("bookSq", bookSq);
+					template="homepage.html";
+				}
+				else if (!u.getStatus().equals(Status.VERIFIED)) {
+					
+					template="verify.html";
+					//processor.processTemplate(template, root, request, response);
+				}
+				else {
+					response.setContentType("text/html");
+					response.getWriter().write("" + u.getStatus());
+					//processor.processTemplate("../../signin.html", root, request, response);
+				}
 			}
 			
 			
@@ -335,7 +346,8 @@ public class BookstoreServlet extends HttpServlet {
 				
 			if(session.getAttribute("type").equals(UserType.ADMIN)) {
 				Admin a = new Admin("","","","",Status.VERIFIED);
-				
+				List<User> userSq = a.getUsers();
+				root.put("userSq", userSq);
 				if (page.equals("addBook")) {
 					//attempting to add book
 					String title = request.getParameter("title");
@@ -372,8 +384,6 @@ public class BookstoreServlet extends HttpServlet {
 					
 				}
 				if (page.equals("editUsers")) {
-					List<User>userSq = a.getUsers();
-					root.put("userSq", userSq);
 					template="editUsers.html";
 				}
 				if (page.equals("addBookPage")) {
@@ -390,9 +400,24 @@ public class BookstoreServlet extends HttpServlet {
 				
 				if(page.equals("suspendUser")) {
 					String id = request.getParameter("suspendUserId");
+					int suspend = a.updateUser(id, Status.SUSPENDED);
+					userSq = a.getUsers();
+					root.put("userSq", userSq);
+					template="editUsers.html";
 				}
 				if (page.equals("deleteUser")) {
 					String id= request.getParameter("deleteUserId");
+					int delete = a.deleteUser(id);
+					userSq = a.getUsers();
+					root.put("userSq", userSq);
+					template="editUsers.html";
+				}
+				if (page.equals("unSuspendUser")) {
+					String id= request.getParameter("unSuspendUserId");
+					int unSuspend = a.updateUser(id, Status.VERIFIED);
+					userSq = a.getUsers();
+					root.put("userSq", userSq);
+					template="editUsers.html";
 				}
 				
 			}

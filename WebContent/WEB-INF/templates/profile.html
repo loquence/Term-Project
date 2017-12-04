@@ -24,6 +24,9 @@
 		function clickedDelete(e){
 			if(!confirm('Are you sure you want to delete user ${u.email?html}? This action cannot be undone.'))e.preventDefault();
 			}
+		function clickedUnSuspend(e){
+			if(!confirm('Are you sure you want to unsuspend user ${u.email?html}?'))e.preventDefault();
+			}
     </script> 
     </head>
     <body style="background:gray">
@@ -38,11 +41,20 @@
                    
                 </div>
                  <#if type == "ADMIN">
+                 	<#if u.status == "VERIFIED"> 
                     <form action="BookstoreServlet" method="post" onclick="clickedSuspend(event)">
                     	<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-lock"> Suspend</span></button>
                     	<input type="hidden" name="page" value="suspendUser">
                     	<input type="hidden" name="suspendUserId" value="${u.id?html}">
                     </form>
+                    <#else>
+                    <form action="BookstoreServlet" method="post" onclick="clickedUnSuspend(event)">
+                    	<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-lock"><#if u.status=="SUSPENDED"> UnSuspend<#else> Verify</#if></span></button>
+                    	<input type="hidden" name="page" value="unSuspendUser">
+                    	<input type="hidden" name="unSuspendUserId" value="${u.id?html}">
+                    </form>
+                    
+                    </#if>
                     <form action="BookstoreServlet" method="post" onclick="clickedDelete(event)">
                     	<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"> Delete</span></button>
                     	<input type="hidden" name="page" value="deleteUser">
