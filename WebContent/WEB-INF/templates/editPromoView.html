@@ -13,6 +13,15 @@
     <!-- Latest compiled JavaScript -->
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="./scripts/scripts.js"></script>
+    
+    <script>
+	function clickedEdit(e){
+		if(!confirm('Are you sure you want to edit promotion ${promotion.code?html}? This action cannot be undone.'))e.preventDefault();
+		}
+	function clickedDelete(e){
+		if(!confirm('Are you sure you want to delete promotion ${promotion.code?html}? This action cannot be undone.'))e.preventDefault();
+		}
+    </script>
        
     <title>Online Bookstore</title>
     <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/>
@@ -37,11 +46,20 @@
                             <label for="author">Percentage</label>
                             <input type="text" class="form-control" name="percent"id="percent" value="${promotion.percentage?html}"required>
                         </div>
-                        <p></p>
-                        <input type="hidden" name="page" value="editPromoView">
-                        <input type="hidden" name="editPromoId" value="${promotion.id?html}">
-                        <button type="submit" class="btn btn-default" id="addPromoP">Edit Promotion</button>
-                       	<button type="submit" class="btn btn-default pull right" id="deletePromo">Delete Promotion</button>
+                        <p></p>                        
+                        
+                        <form action="BookstoreServlet" method="post" onclick="clickedEdit(event)">
+                        	<button type="submit" class="btn btn-default" id="addPromoP">Edit Promotion</button>
+                        	<input type="hidden" name="page" value="editPromoView">
+                        	<input type="hidden" name="editPromoId" value="${promotion.id?html}">
+                        </form>
+                        
+                        <form action="BookstoreServlet" method="post" onclick="clickedDelete(event)">
+                        	<button type="submit" class="btn btn-default pull right" id="deletePromo">Delete Promotion</button>
+                       		<input type="hidden" name="page" value="deletePromo">
+                        	<input type="hidden" name="deletePromoId" value="${promotion.id?html}">
+                        </form>
+                        
               
                     </fieldset>    
                 </form>
