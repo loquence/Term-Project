@@ -14,37 +14,40 @@ import persistlayer.DbAccessImpl;
 public class Customer extends User {
 	
 	
-	private String address;
-	private String number;
-	private String cardType;
-	private String cardNumber;
-	private Date cardExpDate;
-	private ShoppingCart cart;
+	private UserInfo userInfo;
+	private List<Order> orderInfo;
+	private int orderNumber;
 	
-	public String getCardType() {
-		return cardType;
-	}
-
-	public void setCardType(String cardType) {
-		this.cardType = cardType;
-	}
-
-	public String getCardNumber() {
-		return cardNumber;
-	}
-
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
-
-	public Date getCardExpDate() {
-		return cardExpDate;
-	}
-
-	public void setCardExpDate(Date cardExpDate) {
-		this.cardExpDate = cardExpDate;
-	}
 	
+	public int getOrderNumber() {
+		return orderNumber;
+	}
+
+	public void setOrderNumber(int orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+	public List<Order> getOrderInfo() {
+		return orderInfo;
+	}
+
+	public void setOrderInfo(List<Order> orderInfo) {
+		int num = 0;
+		for(Order o: orderInfo) {
+			++num;
+		}
+		this.orderNumber = num;
+		this.orderInfo = orderInfo;
+	}
+
+	public UserInfo getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
+	}
+
 	public Customer(User u) {
 		super(u.getFname(),u.getLname(),u.getEmail(),u.getPwd(),u.getStatus(),UserType.CUSTOMER);
 		setId(u.getId());
@@ -57,21 +60,7 @@ public class Customer extends User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getNumber() {
-		return number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
+	
 
 	
 	public int addCode(String code) {
@@ -99,6 +88,23 @@ public class Customer extends User {
 	
 	public ShoppingCart deleteFromCart(String id) {
 		return getPersist().deleteFromCart(id, this);
+	}
+	
+	public UserInfo pullUserInfo() {
+		String test = "" + this.getId();
+		return getPersist().getObject("user_id", ObjectType.user_info, test);
+	}
+	
+	public int updateUserInfo() {
+		return getPersist().updateUserInfo(this.userInfo,this);
+	}
+	
+	public List<Order> placeOrder() {
+		return getPersist().placeOrder(this);
+	}
+	
+	public List<Order> getOrders(){
+		return getPersist().getOrders(this);
 	}
 
 	

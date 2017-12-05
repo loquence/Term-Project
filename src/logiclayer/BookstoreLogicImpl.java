@@ -36,6 +36,9 @@ public class BookstoreLogicImpl {
 	public <T> T getBook(String column, String value) {
 		return bookstorePersist.getObject(column, ObjectType.book, value);
 	}
+	public List<Book> getBookListAdv(String type, String value) {
+		return bookstorePersist.getBookListAdv(type,value);
+	}
 	
 	
 	

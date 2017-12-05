@@ -23,7 +23,7 @@ public class BookstorePersistImpl {
 		String sql2 = "SELECT * from users where email='" + u.getEmail() + "';";
 		int check = DbAccessImpl.create(sql);
 		if (check != 0) {
-			return DbAccessImpl.getObject(sql2, ObjectType.users,false);
+			return DbAccessImpl.getObject(sql2, ObjectType.users);
 		}
 		return null;
 	}
@@ -46,7 +46,7 @@ public class BookstorePersistImpl {
 		
 		if(p != null) {
 			if (pwd.equals(p)) {
-				return DbAccessImpl.getObject(sql,ObjectType.users,false);
+				return DbAccessImpl.getObject(sql,ObjectType.users);
 				/*Status s = Status.valueOf(DbAccessImpl.getString(sql, "status"));
 				UserType t = UserType.valueOf(DbAccessImpl.getString(sql, "type"));
 				u.setFname(f);
@@ -95,7 +95,7 @@ public class BookstorePersistImpl {
 				
 				DbAccessImpl.update(update);
 				DbAccessImpl.update(delete);
-				User ret = DbAccessImpl.getObject(sql, ObjectType.users,false);
+				User ret = DbAccessImpl.getObject(sql, ObjectType.users);
 				String cart = "INSERT into cart (cart_id) VALUES" + "('" + ret.getId() + "');";
 				DbAccessImpl.update(cart);
 				return ret;
@@ -108,7 +108,7 @@ public class BookstorePersistImpl {
 	
 	public <T> List<T> getUsers() {
 		String sql = "Select * FROM users where type!='" +UserType.ADMIN + "';";
-		return DbAccessImpl.getList(sql, ObjectType.users,false);
+		return DbAccessImpl.getList(sql, ObjectType.users,false,false);
 	}
 	
 	public int addBook(Book b) {
@@ -119,29 +119,24 @@ public class BookstorePersistImpl {
 	
 	public <T> List<T> getObjectList(ObjectType o) {
 		String sql = "Select * from " + o + ";";
-		return DbAccessImpl.getList(sql,o,false);
+		return DbAccessImpl.getList(sql,o,false,false);
 	}
 	
 	public <T> T getObject(String column, ObjectType o, String value) {
 		
 			String sql = "Select * from " + o + " where " + column + "='" + value + "';";
-		return DbAccessImpl.getObject(sql, o,false);
+		return DbAccessImpl.getObject(sql, o);
 	}
 	
 	public Customer getCustomer(String id) {
 		String sql = "Select * from user_info where user_id='" + id + "';";
-		String test = DbAccessImpl.getString(sql, "address");
-		String sql2;
-		Boolean flag = false;
-		if (test == null) {
-			sql2 = "SELECT * from users where id='" + id+ "';";
+		String sql2 = "SELECT * from users where id='" + id+ "';";
+		sql2 = "SELECT * from users where id='" + id+ "';";
 			
-		}
-		else {
-			sql2 = "SELECT * from users join user_info on users.id=user_info.user_id where users.id='" + id + "';";
-			flag = true;
-		}
-		return DbAccessImpl.getObject(sql2, ObjectType.customer, flag);
+		Customer c = DbAccessImpl.getObject(sql2, ObjectType.customer);
+		UserInfo ui = DbAccessImpl.getObject(sql,ObjectType.user_info);
+		c.setUserInfo(ui);
+		return c;
 	}
 	
 	public int updateUser(String id, Status s) {
@@ -184,7 +179,7 @@ public class BookstorePersistImpl {
 	
 	public List<Book> getBooksInCart(Customer c){
 		String sql = "SELECT * FROM book join books_in_cart on book.book_id = books_in_cart.book_id where cart_id='" + c.getId() + "';";
-		return DbAccessImpl.getList(sql, ObjectType.book,true);
+		return DbAccessImpl.getList(sql, ObjectType.book,true,true);
 		
 	}
 	public ShoppingCart deleteFromCart(String id, Customer c) {
@@ -198,13 +193,13 @@ public class BookstorePersistImpl {
 		String sql2 = "SELECT * from cart where cart_id='" + cu.getId() + "';";
 		String getBooksList = "SELECT * from books_in_cart where cart_id='" + cu.getId() + "';";
 		
-		ShoppingCart c = DbAccessImpl.getObject(sql2, ObjectType.cart, true);
+		ShoppingCart c = DbAccessImpl.getObject(sql2, ObjectType.cart);
 		List<Book> booksIn = getBooksInCart(cu);
-		List<Integer> ls = DbAccessImpl.getList(getBooksList, ObjectType.bookId,false);
+		List<Integer> ls = DbAccessImpl.getList(getBooksList, ObjectType.bookId,false,false);
 		c.calculatePriceAndNumber(booksIn);
 		String updateCart = "UPDATE cart SET totalPrice='" + c.getTotalPrice() + "', number='" + c.getNumber() + "' where cart_id='" + c.getCustomerID() + "';";
 		DbAccessImpl.update(updateCart);
-		c = DbAccessImpl.getObject(sql2, ObjectType.cart, true);
+		c = DbAccessImpl.getObject(sql2, ObjectType.cart);
 		c.setBookIdList(ls);
 		return c;
 	}
@@ -223,6 +218,57 @@ public class BookstorePersistImpl {
 			+ "', quantity='" + b.getQuantity() 
 			+ "', rating='" + b.getRating() + "' where book_id='" + b.getId() + "';"; 
 		return DbAccessImpl.update(sql);
+	}
+	
+	public int updateUserInfo(UserInfo ui, Customer c) {
+		String sql ="SELECT * from user_info where user_id='" + c.getId() + "';";
+		UserInfo us = DbAccessImpl.getObject(sql, ObjectType.user_info);
+		int promos = 0;
+		if(ui.getPromos()) {
+			promos = 1;
+		}
+		if (us != null) {
+			String update = "UPDATE user_info SET phone_number='" + ui.getNumber() + "', card_type='" + ui.getCardType() + "',card_number='" + ui.getCardNumber() + "', address='" + ui.getAddress() + "', promos='" + promos + "' where user_id='" + c.getId() + "';";
+			return DbAccessImpl.update(update);
+		}else {
+			String insert = "INSERT into user_info (phone_number,card_type,card_number,card_exp_date,user_id,address,promos) VALUES ('" + ui.getNumber() + "','" + ui.getCardType() + "','" + ui.getCardNumber() + "','" + ui.getCardExpDate() + "','" + c.getId() + "','" + ui.getAddress() + "','" + promos + "');"; 
+			return DbAccessImpl.update(insert);
+			
+		}
+		
+	}
+	
+	public List<Order> placeOrder(Customer c) {
+		ShoppingCart cart = updateCart(c);
+		
+		
+		
+		
+		List<Book> bk = getBooksInCart(c);
+		int lastB = 0;
+		for (Book b : bk) {
+			lastB=b.getDbId();
+		}
+		String updateOrder = "INSERT into bookstore.order (customer_id,order_status,order_price,lastBookId) VALUES ('" + c.getId() + "','" + OrderStatus.PROCESSING + "','" + cart.getTotalPrice() + "','" + lastB + "');";
+		int orderId = DbAccessImpl.update(updateOrder);
+		String sql2 = "Select * from bookstore.order where lastBookId='" + lastB + "';";
+		Order or = DbAccessImpl.getObject(sql2, ObjectType.order);
+		String updateCart = "UPDATE books_in_cart SET cart_id='" + 0 + "', order_id='"+ or.getOrderId() + "'where cart_id='" + c.getId() + "';";
+		int check = DbAccessImpl.update(updateCart);
+		String sql = "SELECT * from bookstore.order where lastBookId='" + lastB + "';";
+		List<Order> o = DbAccessImpl.getList(sql, ObjectType.order, false,false);
+		
+		return o;
+	}
+	
+	public List<Order> getOrders(Customer c){
+		String sql="SELECT * from bookstore.order where customer_id='" + c.getId() + "';";
+		return DbAccessImpl.getList(sql, ObjectType.order, false, false);
+	}
+	
+	public List<Book> getBookListAdv(String type, String value){
+	String sql = "SELECT * from book where " + type +" LIKE '%" + value + "%';";
+	return DbAccessImpl.getList(sql, ObjectType.book, false, false);
 	}
 	
 	

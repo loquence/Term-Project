@@ -183,7 +183,7 @@ public class DbAccessImpl {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected static <T> List<T> getList(String sql, ObjectType o, Boolean cartFlag){
+	protected static <T> List<T> getList(String sql, ObjectType o, Boolean cartFlag,Boolean lastBookIdFlag){
 		Connection c = connect();
 		ResultSet rs = retrieve(sql, c);
 		
@@ -201,6 +201,9 @@ public class DbAccessImpl {
 					b.setRating(rs.getInt("rating"));
 					if(cartFlag) {
 					b.setCartQuantity(rs.getInt("cart_quantity"));
+					if (lastBookIdFlag) {
+						b.setDbId(rs.getInt("books_in_cart.id"));
+					}
 					}
 					ls.add((T) b);
 				}
@@ -232,6 +235,16 @@ public class DbAccessImpl {
 				while(rs.next()) {
 					ls.add((T) (Integer) rs.getInt("book_id"));
 				}
+				break;
+			case order:
+				Order or;
+				while(rs.next()) {
+					or = new Order(rs.getInt("order_id"),rs.getInt("customer_id"), OrderStatus.valueOf(rs.getString("order_status")),rs.getInt("order_price"),rs.getInt("lastBookId"));
+					ls.add((T) or);
+				}
+				
+				break;	
+				
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -242,7 +255,7 @@ public class DbAccessImpl {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T getObject(String sql,  ObjectType o, Boolean CustomerFlag) {
+	public static <T> T getObject(String sql,  ObjectType o) {
 		Connection c = connect();
 		ResultSet rs = retrieve(sql, c);
 		
@@ -284,17 +297,22 @@ public class DbAccessImpl {
 				Customer cu = null;
 				while(rs.next()) {
 					cu = new Customer(rs.getString("fname"),rs.getString("lname"),rs.getString("email"),rs.getString("password"),Status.valueOf(rs.getString("status")));
-					if(CustomerFlag) {
-					cu.setNumber(rs.getString("phone_number"));
-					cu.setAddress(rs.getString("address"));
-					cu.setCardExpDate(rs.getDate("card_exp_date"));
-					cu.setCardType(rs.getString("card_type"));
-					cu.setCardNumber(rs.getString("card_number"));
-					}
 					cu.setId(rs.getInt("id"));
 				}
 				return (T) cu;
-				
+			case user_info:
+				UserInfo ui = null;
+				while(rs.next()) {
+					ui = new UserInfo(rs.getString("address"),rs.getString("phone_number"), rs.getString("card_type"),rs.getString("card_number"),rs.getString("card_exp_date"),rs.getBoolean("promos"));
+				}
+				return (T) ui;
+			case order:
+				Order or = null;
+				while(rs.next()) {
+					or = new Order(rs.getInt("order_id"),rs.getInt("customer_id"), OrderStatus.valueOf(rs.getString("order_status")),rs.getInt("order_price"),rs.getInt("lastBookId"));
+					
+				}	
+				return (T) or;
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();

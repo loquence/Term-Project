@@ -8,7 +8,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span> 
                         </button>
-                        <a class="navbar-brand" href="#">Welcome<#if user??>, ${user}<#else>User</#if></a>
+                        <a class="navbar-brand" href="#">Welcome<#if user??>, ${user}<#else></#if></a>
                     </div> 
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav">
@@ -40,6 +40,13 @@
                         <ul class="nav navbar-nav navbar-right">
                         	<#if type??>
                         		<#if type =="CUSTOMER">
+                            <li>
+                            <a href="javascript:{}" onclick="document.getElementById('orderForm').submit()"><span class="glyphicon glyphicon-plane">  Orders <#if c??><span class="badge">${c.orderNumber}</span></#if></span></a>
+                            <form action="BookstoreServlet" method="post" id="orderForm">
+                            	<input type="hidden" name="page" value="order">
+                            	<input type="hidden" name="userId" value="${id?html}">
+                            </form>
+                            </li>
                             <li>
                             <a href="javascript:{}" onclick="document.getElementById('cartForm').submit()"><span class="glyphicon glyphicon-shopping-cart">  Cart <#if cart??><span class="badge">${cart.number}</span></#if></span></a>
                             <form action="BookstoreServlet" method="post" id="cartForm">
@@ -95,13 +102,17 @@
   								</li>
   								</#if>
   							</#if>
-  							
+  							<#if user??>
                             <li>
                             	<a href="javascript:{}" onclick="document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Logout</a>
                             	<form action="BookstoreServlet" method="POST" id="logoutForm">
                             		<input type="hidden" name="page" value="logout">
                             	</form>
                             </li>
+                            <#else>
+                            <li><a href="signup.html"><span class="glyphicon glyphicon-user"></span>  Sign Up</a></li>
+                            <li><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
+                            </#if>
                         </ul>
                     </div>    
                 

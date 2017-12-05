@@ -1,7 +1,7 @@
-<!DOCTYPE HTML>
-<html lang="en">
-    <head>
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <link href="styles.css" type="text/css" rel="stylesheet"/>
     <!-- Latest compiled and minified CSS -->
@@ -28,35 +28,28 @@
         <div class="container">
             <table class="table table-hover table-condensed">
             	<tr class="info" style="background:white">	
-                	<th>Title</th>
-                	<th>Author</th>
-                	<th>Price</th>
+                	<th>Order Id</th>
+                	<th>Order Price</th>
+                	<th>Order Status</th>
                 </tr>
-                <#list bookCart as b>
+                <#list order as order>
                 	<tr style="background:white">
-                	<td>${b.title} <span class="badge">${b.cartQuantity}</span></td>
-                	<td>${b.author}</td>
-                	<td>$${(b.sellingPrice * b.cartQuantity)?string(",##0.00")}<form action="BookstoreServlet" method="POST" id="${b.id?html}" onclick="clicked(event)" class="pull-right">
+                	<td>${order.orderId}</td>
+                	<td>$${order.price?string(",##0.00")}</td>
+                	<td>$${(order.status)}<form action="BookstoreServlet" method="POST" id="${order.orderId?html}" onclick="clicked(event)" class="pull-right">
                 							<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"></span></button>
-                							<input type="hidden" name="page" value="deleteFromCart">
-                							<input type="hidden" name="deleteBookId" value="${b.id}">
+                							<input type="hidden" name="page" value="deleteFromOrders">
+                							<input type="hidden" name="deleteBookId" value="${order.orderId}">
                 							</form></td>
                 	</tr>
                 </#list>
                 
-                <tr style="background:white">
-                <td></td>
-                <td>Total:</td>
-                <td>$${cart.totalPrice?string(",##0.00")}
-                </tr>
+                
             </table>
-            <form method="post" action="BookstoreServlet">
-            <button type="submit" class="btn btn-default pull-right">Checkout <span class="glyphicon glyphicon-usd"></span></button>
-            <input type="hidden" name="page" value="checkout">
-            <input type="hidden" name="checkoutId" value="${id?c?html}">
-            </form>
+            
                 							
                 
         	</div> 
-	</body>
+	
+</body>
 </html>

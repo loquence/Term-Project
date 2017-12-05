@@ -2,66 +2,86 @@
 <html>
 <head>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="editBook.css" type="text/css" rel="stylesheet" />
+ <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link href="styles.css" type="text/css" rel="stylesheet"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<!-- jQuery library -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./scripts/scripts.js"></script>
+       
+    <title>Online Bookstore</title>
+    <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/> 
+    <script type="text/javascript">
+		$(function(){
+			$('addToCartForm').submit(function(e){
+				e.preventDefault();
+				$.ajax({
+					type: $(this).attr('method'),
+					url: $(this).attr('action'),
+					data: $(this).serialize(),
+					success:function(responseText){
+							if(responseText.equals("true")){
+									
+								}
+						}
+					})
+            });
 
-<!-- Latest compiled JavaScript -->
-<script type="text/javascript"
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
-<title>Edit Books</title>
-<link rel="shortcut icon" type="image/png"
-	href="http://weknowyourdreams.com/images/book/book-08.jpg" />
-</head>
-
-<body>
-	<#include"navbar.html">
-	<div class="container-fluid">
-		<#list bookSq as bq> 
-		<#if bq?index< 12 > 
-		<#if
-			bq?index%3==0>
-		<div class="col-md-3">
-		</#if>
-		<div class="media hoverDiv"
-			onclick="document.getElementById('${bq.id?html}').submit()">
-			<form action="BookstoreServlet" method="POST" id="${bq.id?html}">
-				<input type="hidden" name="page" value="viewBook"> <input
-					type="hidden" name="viewBookId" value="${bq.id?html}">
-			</form>
-			<div class="media-left">
-				<img width="150" height="150" src="${bq.cover?html}">
-			</div>
-			<div class="media-body">
-				<p>${bq.title}</p>
-				<p>${bq.author}</p>
-				<p>$${bq.sellingPrice}</p>
-				<#if type !="ADMIN">
-				<form action="BookstoreServlet" method="POST">
-					<p>
-						<button type="button" class="btn btn-default">
-							<span class="glyphicon glyphicon-shopping-cart"></span>
-						</button>
-					</p>
-					<input type="hidden" name="page" value="addToCart"> <input
-						type="hidden" name="bookId" value="${bq.id?html}">
-				</form>
-				</#if>
-			</div>
-		</div>
-		<#if bq?index%3==2>
-	</div>
-	</div>
+		});
+	</script>
+    </head>
+    <body>
+        <#include "navbar.html">
+       
+        
+         <div id="image"><img src="http://www.websterschools.org/tfiles/folder1083/Library%20secondary.jpg" alt=""/></div>
+        <br><br>
+        
+        <div class="content">
+            <div class="products">
+                <ul>
+                <#list bookSq as bq>
+           		
+                    <li>
+                        <div class="product" onclick="document.getElementById('${bq.id?html}').submit()">
+                            <a href="#" class="info">
+                                <span class="holder">
+                                    <img src="${bq.cover?html}" alt="" />
+                                    <span class="book-name">${bq.title}</span>
+                                    <span class="author">by ${bq.author}</span>
+                                    <#list 1..bq.rating as b>
+                                    <#if bq.rating < 6>
+                                    <span>&#9733;</span>
+                                    </#if>
+                                    </#list>
+                                    <#assign x=bq.rating+1>
+                                    <#if bq.rating < 5>
+                                    <#list x..5 as b>
+                                    <span>&#9734;</span>
+                                    </#list>
+                                    </#if>
+                                    <span class="price">$${bq.sellingPrice?string(",##0.00")}</span>
+                                </span>
+                            </a>
+                        </div>
+                        <#if user??>
+                        <form method="POST" action="BookstoreServlet" id="${bq.id?html}">
+                        	<input type="hidden" name="page" value="viewBook">
+                        	<input type="hidden" name="viewBookId" value="${bq.id?html}">
+                        </form>
+                        </#if>
+                    </li>
+                    
+                    </#list>
+                 </ul>
+               </div>
+          </div>
 </body>
 
 </html>

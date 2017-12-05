@@ -19,7 +19,16 @@ public class Book {
 	private int minThreshold;
 	private int id;
 	private int cartQuantity;
+	private int dbId;
 	
+	public int getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(int dbId) {
+		this.dbId = dbId;
+	}
+
 	public int getCartQuantity() {
 		return cartQuantity;
 	}

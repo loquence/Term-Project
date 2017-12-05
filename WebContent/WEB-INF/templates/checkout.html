@@ -17,71 +17,50 @@
     <title>Checkout</title>
     <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/>  
     </head>
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span> 
-                        </button>
-                        <a class="navbar-brand" href="#">Checkout</a>
-                    </div> 
-                    <div class="collapse navbar-collapse" id="myNavbar">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span></a></li>
-                        </ul>
-                        
-                        <form class="navbar-form navbar-left">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search Catalog">
-                                <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-                                </div>    
-                            </div>
-                        </form>
-                           
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#"><span class="glyphicon glyphicon-shopping-cart">  Cart</span></a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-user"></span>  Profile</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
-                        </ul>
-                    </div>    
-                
-            </div>
-        </nav>
+       <body>
+       <#include "navbar.html">
         <div class="container-fluid">
             <div class="col-md-4 col-md-offset-1">
-            <form>
+            <form action="BookstoreServlet" method="POST">
                 <fieldset>
-                    <legend>Checkout</legend>
+    
+                    <legend><#if cust.userInfo??>Is this the correct shipping info?<#else>Update your shipping info</#if></legend>
+                    
                     <div class="form-group">
-                        <label for="addr">Shipping Address</label>
-                        <input type="text" class="form-control" id="addr">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" name="address" id="address" <#if cust.userInfo??>value="${cust.userInfo.address?html}"</#if>>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="number">Phone Number</label>
+                        <input type="text" class="form-control" name="number" id="number" <#if cust.userInfo??>value="${cust.userInfo.number?html}"</#if>>
                     </div>
                     <div class="form-group">
-                        <label for="city">City/Town</label>
-                        <input type="text" class="form-control" id="city">
+                        <label for="cardType">Card Type</label>
+                        <input type="text" class="form-control" name="cardType" id="cardType" <#if cust.userInfo??>value="${cust.userInfo.cardType?html}"</#if>>
                     </div>
                     <div class="form-group">
-                        <label for="state">State/Province/Region</label>
-                        <input type="text" class="form-control" id="state">
+                        <label for="cardNum">Card Number</label>
+                        <input type="text" class="form-control" name="cardNum" id="cardNum" <#if cust.userInfo??>value="${cust.userInfo.cardNumber?html}"</#if>>
                     </div>
                     <div class="form-group">
-                        <label for="zip">Zip/Postal Code</label>
-                        <input type="text" class="form-control" id="zip">
+                        <label for="cardExp">Card Expiration Date</label>
+                        <input type="date" class="form-control" name="cardExp" id="cardExp" <#if cust.userInfo??>value="${cust.userInfo.cardExpDate?html}"</#if>>
                     </div>
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <input type="text" class="form-control" id="country">
-                    </div>
-                    <div class="form-group">
-                        <label for="cardinfo">Card Info</label>
-                        <input type="text" class="form-control" id="cardinfo">
-                    </div>
+                    
+                    <#if cust.userInfo??>
+                    	<#if cust.userInfo.promos??>
+                    <#else>
+                    <input type="checkbox" name="promos" value="promos">Sign up to get promo deals emailed to your email?
+                    </#if>
+                    <#else>
+                    <input type="checkbox" name="promos" value="promos">Sign up to get promo deals emailed to your email?
+                    </#if>
+                    <button type="submit" class="btn btn-default" >Proceed to Checkout</button>
+                    <input type="hidden" name="page" value="checkoutForm">
                 </fieldset> 
             </form>
         </div>
     </div>
+    </body>
 </html>

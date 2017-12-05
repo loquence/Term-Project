@@ -56,6 +56,7 @@ public class BookstoreServlet extends HttpServlet {
     private Book b;
     private ShoppingCart cart;
     private List<Book> bookCart;
+    private List<Order> or;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -124,7 +125,13 @@ public class BookstoreServlet extends HttpServlet {
 		 * Checks if page who sent post request is the signup page
 		 * Currently this form is being handled by an ajax call.
 		 */
-		
+		if(page.equals("search")) {
+			String type = request.getParameter("search");
+			String value = request.getParameter("advSearchValue");
+			bookSq = bookstoreLogicImpl.getBookListAdv(type,value);
+			root.put("bookSq", bookSq);
+			template="listSearch.html";
+		}
 		if (page.equals("signup")) {
 			
 			/*
@@ -215,14 +222,7 @@ public class BookstoreServlet extends HttpServlet {
 					 * Sends this html response to the ajax method that sent this request.
 					 * 
 					 */
-					HttpSession session = request.getSession(true);//getting the current session on startup
-					synchronized(session) {
-						session.setAttribute("id",u.getId());
-						session.setAttribute("email", u.getEmail());
-						session.setAttribute("fname", u.getFname());
-						session.setAttribute("lname", u.getLname());
-						session.setAttribute("type", u.getType());
-					}
+					
 					
 						root.put("email", u.getEmail());
 						template="verify.html";
@@ -333,11 +333,58 @@ public class BookstoreServlet extends HttpServlet {
 			
 			Customer u = new Customer("","","","",null);
 			u.setId((int) session.getAttribute("id"));
+			
 			if (session.getAttribute("type").equals(UserType.CUSTOMER)) {
 				cart = u.getCart();
 				bookCart = u.getBooksInCart();
+				or = u.getOrders();
+				u.setOrderInfo(or);
+				root.put("c",u);
+				root.put("order",or);
 				root.put("cart", cart);
 				root.put("bookCart", bookCart);
+			}
+			if(page.equals("order")) {
+				template="viewOrder.html";
+			}
+			if(page.equals("placeOrder")) {
+				u.placeOrder();
+				bookCart= u.getBooksInCart();
+				cart = u.getCart();
+				root.put("cart", cart);
+				root.put("bookCart", bookCart);
+				or = u.getOrders();
+				u.setOrderInfo(or);
+				root.put("c",u);
+				root.put("order",or);
+				template="homepage.html";
+			}
+			if(page.equals("checkoutForm")) {
+				String address = request.getParameter("address");
+				
+				String number = request.getParameter("number");
+				
+				String cardType = request.getParameter("cardType");
+				String cardNum = request.getParameter("cardNum");
+				String cardExp = request.getParameter("cardExp");
+				Boolean flag = false;
+				String promos = request.getParameter("promos");
+				if(promos != null) {
+					flag = true;
+				}
+				UserInfo ui = new UserInfo(address,number,cardType,cardNum,cardExp,flag);
+				u.setUserInfo(ui);
+				int check = u.updateUserInfo();
+				cart = u.getCart();
+				root.put("cart", cart);
+				template="placeOrder.html";
+			} 
+			if(page.equals("checkout")) {
+				u = u.getUser("" + u.getId());
+
+				root.put("cust", u);
+				root.put("userInfo", u.getUserInfo());
+				template="checkout.html";
 			}
 			if(page.equals("deleteFromCart")) {
 				String deleteBookId = request.getParameter("deleteBookId");
@@ -348,7 +395,7 @@ public class BookstoreServlet extends HttpServlet {
 				template="cart.html";
 			}
 			if(page.equals("cart")) {
-				
+				root.put("id", session.getAttribute("id"));
 				template="cart.html";
 			}
 			
