@@ -449,14 +449,45 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("userSq", userSq);
 					template="editUsers.html";
 				}
+				if(page.equals("addPromo")) {
+					String promoCode = request.getParameter("code");
+					String expDate = request.getParameter("exp");
+					String percent = "0." + request.getParameter("percent");
+					Double percentage;
+					
+					try {
+						percentage = Double.parseDouble(percent);
+					}
+					catch (Exception e) {
+						StringBuilder s = new StringBuilder(percent);
+						for(int i = 2; i < s.length(); ++i) {
+							if(s.charAt(i) == '.') {
+								s.deleteCharAt(i);
+							}
+						}
+						String per = s.toString();
+						percentage = Double.parseDouble(per);
+					}
+					
+					Promotion p = new Promotion(promoCode, percentage, expDate);
+					int check = a.addPromo(p);
+				}
+				if(page.equals("addPromos")) {
+					template="addPromotion.html";
+				}
+				if (page.equals("editPromotions")) {
+					List<Promotion> p = getPromotionList(bookstoreLogicImpl);
+					root.put("promotion", p);
+					template="editPromotions.html";
+				}
 				
 			}
+			
 			if (page.equals("logout")) {
 				session.invalidate();
 				root = new SimpleHash(db.build());
 				
-			}
-			
+			}	
 			
 		}
 		if(page.equals("adv")) {
@@ -499,7 +530,7 @@ public class BookstoreServlet extends HttpServlet {
 			session.setAttribute("fname", u.getFname());
 			session.setAttribute("lname", u.getLname());
 			session.setAttribute("type", u.getType());
-				}
+		}
 
 	}
 	
@@ -508,6 +539,9 @@ public class BookstoreServlet extends HttpServlet {
 		return sq;
 	}
 	
-	
+	public <T> List<T> getPromotionList(BookstoreLogicImpl bli) {
+		List<T> sq = bli.getPromotionList();
+		return sq;
+	}
 
 }
