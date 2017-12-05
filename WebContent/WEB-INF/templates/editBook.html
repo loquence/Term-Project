@@ -48,15 +48,15 @@
                 	<td>${b.author}</td>
                 	<td>${b.edition}</td>
                 	<td>${b.publisher}</td>
-                	<td>${b.publicationYear}</td>
-                	<td>${b.minThreshold}</td>
-                	<td>$${b.buyingPrice}</td>
-                	<td>$${b.sellingPrice}</td>
+                	<td>${b.publicationYear?c}</td>
+                	<td>${b.minThreshold?c}</td>
+                	<td>$${b.buyingPrice?string(",##0.00")}</td>
+                	<td>$${b.sellingPrice?string(",##0.00")}</td>
                 	<td>${b.cover}</td>
-                	<td>TEMP</td>
+                	<td>${b.rating?c}</td>
                 	<form action="BookstoreServlet" method="POST" id="${b.id?html}">
                 		<input type="hidden" name="page" value="editBookForm">
-                		<input type="hidden" name="editBookId" value="${b.id?html}">
+                		<input type="hidden" name="editBookId" value="${b.id?c?html}">
                 	</form>
                 	
             	</tr>

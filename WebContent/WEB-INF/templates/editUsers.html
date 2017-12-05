@@ -37,7 +37,7 @@
             <#if userSq??>
             <#list userSq as userSq>
             	<tr onclick="document.getElementById('${userSq.id?html}').submit()">
-            	<td>${userSq.id}</td>
+            	<td>${userSq.id?c}</td>
             	<td>${userSq.fname}</td>
             	<td>${userSq.lname}</td>
             	<td>${userSq.email}</td>
@@ -45,7 +45,7 @@
             	<td>${userSq.status}</td>
             	<form action="BookstoreServlet" method="POST" id="${userSq.id?html}">
             		<input type="hidden" name="page" value="editUserForm">
-            		<input type="hidden" name="editUserId" value="${userSq.id?html}">
+            		<input type="hidden" name="editUserId" value="${userSq.id?c?html}">
             	</form>
             	<tr>
             </#list>

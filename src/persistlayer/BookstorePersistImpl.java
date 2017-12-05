@@ -172,11 +172,11 @@ public class BookstorePersistImpl {
 			quantity++;
 			String update = "UPDATE books_in_cart SET cart_quantity='" + quantity + "' where book_id='" + id + "' AND cart_id='" + c.getId() + "';";
 			DbAccessImpl.update(update);
-			ShoppingCart cs = updateCart(c,id);
+			ShoppingCart cs = updateCart(c);
 			return cs;
 		}else {
 			DbAccessImpl.update(sql);
-			ShoppingCart cs = updateCart(c,id);
+			ShoppingCart cs = updateCart(c);
 			return cs;
 		}
 		
@@ -190,11 +190,11 @@ public class BookstorePersistImpl {
 	public ShoppingCart deleteFromCart(String id, Customer c) {
 		String sql = "DELETE from books_in_cart where cart_id='" + c.getId() + "' AND book_id='" + id + "';";
 		DbAccessImpl.update(sql);
-		ShoppingCart cart = updateCart(c,id);
+		ShoppingCart cart = updateCart(c);
 		return cart;
 	}
 	
-	public ShoppingCart updateCart(Customer cu, String bookId) {
+	public ShoppingCart updateCart(Customer cu) {
 		String sql2 = "SELECT * from cart where cart_id='" + cu.getId() + "';";
 		String getBooksList = "SELECT * from books_in_cart where cart_id='" + cu.getId() + "';";
 		
@@ -210,8 +210,21 @@ public class BookstorePersistImpl {
 	}
 	
 	public int editBook(Book b) {
-		String sql = "UPDATE book SET isbn='" +b.getISBN() + "', title='" + b.getTitle() + "', category='" + b.getGenre() + "', author='" + b.getAuthor() + "', edition='" + b.getEdition() + "', publisher='" + b.getPublisher() + "', pub_yet='" + b.getPublicationYear() + "', min_thresh='" + b.getMinThreshold() + "', buying_price='" + b.getBuyingPrice() + "', selling_price=''" + b.getSellingPrice() + "', quantity='" + b.getQuantity() + "', rating='" + b.getRating() + "';"; 
+		String sql = "UPDATE book SET isbn='" +b.getISBN() 
+			+ "', title='" + b.getTitle() 
+			+ "', category='" + b.getGenre() 
+			+ "', author='" + b.getAuthor() 
+			+ "', edition='" + b.getEdition() 
+			+ "', publisher='" + b.getPublisher() 
+			+ "', pub_year='" + b.getPublicationYear() 
+			+ "', min_thresh='" + b.getMinThreshold() 
+			+ "', buying_price='" + b.getBuyingPrice() 
+			+ "', selling_price='" + b.getSellingPrice() 
+			+ "', quantity='" + b.getQuantity() 
+			+ "', rating='" + b.getRating() + "' where book_id='" + b.getId() + "';"; 
 		return DbAccessImpl.update(sql);
 	}
+	
+	
 	
 }

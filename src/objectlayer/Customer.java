@@ -87,9 +87,9 @@ public class Customer extends User {
 	}
 	
 	public ShoppingCart getCart() {
-		String id = "" + this.getId();
 		
-		ShoppingCart c = getPersist().getObject("cart_id", ObjectType.cart, id);
+		
+		ShoppingCart c = getPersist().updateCart(this);
 		return c;
 	}
 	

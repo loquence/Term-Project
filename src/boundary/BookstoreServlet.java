@@ -416,6 +416,9 @@ public class BookstoreServlet extends HttpServlet {
 					b.setRating(rat);
 					template="editBook.html";
 					a.editBook(b);
+					bookSq = getBookList(bookstoreLogicImpl);
+					root.put("bookSq", bookSq);
+					
 				}
 				if(page.equals("editBookForm")) {
 					String id = request.getParameter("editBookId");
