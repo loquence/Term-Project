@@ -225,6 +225,9 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.update(sql);
 	}
 	
-	
+	public int editPromo(Promotion p) {
+		String sql = "UPDATE promotion SET code='" + p.getCode() + "', expiration='" + p.getExpiration() + "', percentage='" + p.getPercentage() + "';";
+		return DbAccessImpl.update(sql);
+	}
 	
 }
