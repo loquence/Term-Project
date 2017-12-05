@@ -87,16 +87,9 @@ public class BookstoreServlet extends HttpServlet {
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Gets the name parameter and stores it in page
-		
 		List<Book> b = getBookList(new BookstoreLogicImpl());
 		request.setAttribute("bookSq", b);
-
-        request.getRequestDispatcher("/WEB-INF/templates/homepage.html").forward(request, response);
-		
-		
-
- 
-		
+        request.getRequestDispatcher("/WEB-INF/templates/homepage.html").forward(request, response);	
 	}
 
 	/**
@@ -109,7 +102,7 @@ public class BookstoreServlet extends HttpServlet {
 		 * creation of necessary variables that will be used later
 		 */
 		String page = request.getParameter("page");//gets page value of the given page
-		String template="..\\..\\index.html";//default template page is currently login.html, can be changed later
+		String template=null;//default template page is currently login.html, can be changed later
 		
 		root.put("name", page);//putting name into the hashmap, currently not in use
 		
@@ -253,8 +246,7 @@ public class BookstoreServlet extends HttpServlet {
 			String pwd = request.getParameter("pwd");
 			User u = new User("","",email,pwd,Status.UNVERIFIED,UserType.CUSTOMER);
 			
-			u = u.login();
-			
+			u = u.login();	
 			
 			if (u != null ) {
 				if(u.getStatus().equals(Status.VERIFIED)) {
@@ -265,6 +257,7 @@ public class BookstoreServlet extends HttpServlet {
 						cart = temp.getCart();
 						root.put("cart", cart);
 					}
+					
 					HttpSession session = request.getSession(true);//getting the current session on startup
 					session.setMaxInactiveInterval(1800);//Valid for 1800 seconds
 					loadHomepage(session,template,root,u);
@@ -273,19 +266,20 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("bookSq", bookSq);
 					template="homepage.html";
 				}
+				
 				else if (!u.getStatus().equals(Status.VERIFIED)) {
 					
 					template="verify.html";
 					//processor.processTemplate(template, root, request, response);
 				}
+				
 				else {
 					response.setContentType("text/html");
 					response.getWriter().write("" + u.getStatus());
 					//processor.processTemplate("../../signin.html", root, request, response);
 				}
+				
 			}
-			
-			
 			
 		}
 		
@@ -312,6 +306,7 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("cart", cart);
 					session.setAttribute("cartNumber", cart.getNumber() );
 				}
+				
 				loadHomepage(session,template,root,u);
 				bookSq = getBookList(bookstoreLogicImpl);
 				root.put("bookSq", bookSq);
@@ -344,6 +339,7 @@ public class BookstoreServlet extends HttpServlet {
 				root.put("cart", cart);
 				template="cart.html";
 			}
+			
 			if(page.equals("addToCart")) {
 				String id = request.getParameter("bookId");
 				u.setId((int) session.getAttribute("id"));
@@ -360,20 +356,20 @@ public class BookstoreServlet extends HttpServlet {
 				
 				template="viewBook.html";
 			}
+			
 			if (page.equals("goHome")) {
 				bookSq = getBookList(bookstoreLogicImpl);
 				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
+			
 			if (page.equals("profile")) {
 				int id = (int)session.getAttribute("id");
 				String s = "" + id;
 				System.out.println(s);
 				u = u.getUser(s);
 				root.put("u", u);
-				template = "profile.html";
-				
-				
+				template = "profile.html";	
 			}
 				
 			if(session.getAttribute("type").equals(UserType.ADMIN)) {
@@ -387,6 +383,7 @@ public class BookstoreServlet extends HttpServlet {
 					
 					template="viewBook.html";
 				}
+				
 				if (page.equals("addBook")) {
 					//attempting to add book
 					String title = request.getParameter("title");
@@ -402,8 +399,6 @@ public class BookstoreServlet extends HttpServlet {
 					String cover = "images/" + request.getParameter("cover");
 					String quant = request.getParameter("quantity");
 					
-					
-					
 					Integer pubY = Integer.valueOf(pubYear);
 					Integer ed = Integer.valueOf(edition);
 					Integer minThresh = Integer.valueOf(threshold);
@@ -416,20 +411,21 @@ public class BookstoreServlet extends HttpServlet {
 					template="addBook.html";
 					
 				}
+				
 				if (page.equals("editBooks")) {
 					bookSq = getBookList(bookstoreLogicImpl);
 					root.put("bookSq", bookSq);
 					template="editBook.html";
-					
 				}
+				
 				if (page.equals("editUsers")) {
 					template="editUsers.html";
 				}
+				
 				if (page.equals("addBookPage")) {
-					
 					template="addBook.html";
-					
 				}
+				
 				if (page.equals("editUserForm")) {
 					String id = request.getParameter("editUserId");
 					User us = a.getUser(id);
@@ -444,6 +440,7 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("userSq", userSq);
 					template="editUsers.html";
 				}
+				
 				if (page.equals("deleteUser")) {
 					String id= request.getParameter("deleteUserId");
 					int delete = a.deleteUser(id);
@@ -451,6 +448,7 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("userSq", userSq);
 					template="editUsers.html";
 				}
+				
 				if (page.equals("unSuspendUser")) {
 					String id= request.getParameter("unSuspendUserId");
 					int unSuspend = a.updateUser(id, Status.VERIFIED);
@@ -458,11 +456,18 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("userSq", userSq);
 					template="editUsers.html";
 				}
+				
 				if(page.equals("addPromo")) {
 					String promoCode = request.getParameter("code");
 					String expDate = request.getParameter("exp");
-					String percent = "0." + request.getParameter("percent");
+					String percent = request.getParameter("percent");
 					Double percentage;
+					
+					if(percent.length() < 2) {
+						percent = "0" + percent;
+					}
+					
+					percent = "0." + percent;
 					
 					try {
 						percentage = Double.parseDouble(percent);
@@ -481,24 +486,23 @@ public class BookstoreServlet extends HttpServlet {
 					Promotion p = new Promotion(promoCode, percentage, expDate);
 					int check = a.addPromo(p);
 				}
+				
 				if(page.equals("addPromos")) {
 					template="addPromotion.html";
 				}
+				
 				if (page.equals("editPromotions")) {
 					List<Promotion> p = getPromotionList(bookstoreLogicImpl);
 					root.put("promotion", p);
 					template="editPromotions.html";
 				}
-				
 			}
-			
 			if (page.equals("logout")) {
 				session.invalidate();
-				root = new SimpleHash(db.build());
-				
+				root = new SimpleHash(db.build());	
 			}	
-			
 		}
+		
 		if(page.equals("adv")) {
 			if(session!=null) {
 			root.put("user", session.getAttribute("fname"));
@@ -506,6 +510,16 @@ public class BookstoreServlet extends HttpServlet {
 			}
 			template="advancedSearch.html";
 		}
+		
+		if(template == null) {
+			HttpSession nsession = request.getSession(false);
+			if(nsession != null ) {
+				template="homepage.html";
+			}else {
+				template="..\\..\\index.html";
+			}
+		}
+		
 		processor.processTemplate(template, root, request, response);
 	}
 	
