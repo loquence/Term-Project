@@ -28,6 +28,10 @@ public class BookstoreLogicImpl {
 	public <T> List<T> getBookList() {
 		return bookstorePersist.getObjectList(ObjectType.book);
 	}
+
+	public <T> List<T> getPromotionList() {
+		return bookstorePersist.getObjectList(ObjectType.promotion);
+	}
 	
 	public <T> T getBook(String column, String value) {
 		return bookstorePersist.getObject(column, ObjectType.book, value);
