@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <link href="../CSS/style.css" type="text/css" rel="stylesheet"/>
+    <link href="styles.css" type="text/css" rel="stylesheet"/>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -18,23 +18,29 @@
     <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/>    
     </head>
     <body style="background:gray">
-        <#inclue "navbar.html">
-        <div class="container" style="background:white">
-            <div class="col-md-3">
-            
-                        <div class="media hoverDiv">
-                            <div class="media-left">   
-                            <img width="150" height="150" src="http://pngimg.com/uploads/book/book_PNG2116.png?i=1">
-                            </div> 
-                            <div class="media-body">
-                                <p>Book One</p>
-                                <p>Author One</p>
-                            <p>${bookSq</p>
-                            <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button></p> 
-                            </div>   
-                        </div>
-                        <button type="button" class="btn btn-default">Checkout</button>
-        		</div>
+        <#include "navbar.html">
+        <div class="container">
+            <table class="table table-hover table-condensed">
+            	<tr class="info" style="background:white">	
+                	<th>Title</th>
+                	<th>Author</th>
+                	<th>Price</th>
+                </tr>
+                <#list bookSq as b>
+                	<tr style="background:white">
+                	<td>${b.title}</td>
+                	<td>${b.author}</td>
+                	<td>$${b.sellingPrice}  <button type="button" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"></span></button></td>
+                	</tr>
+                </#list>
+                
+                <tr style="background:white">
+                <td></td>
+                <td>Total:</td>
+                <td>$${cart.totalPrice}
+                </tr>
+                
+                
         	</div> 
 	</body>
 </html>

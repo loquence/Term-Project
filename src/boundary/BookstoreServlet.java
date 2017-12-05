@@ -339,8 +339,10 @@ public class BookstoreServlet extends HttpServlet {
 			u.setId((int) session.getAttribute("id"));
 			if(page.equals("cart")) {
 				bookSq = u.getBooksInCart();
+				cart = u.getCart();
 				root.put("bookSq", bookSq);
-				template="template.html";
+				root.put("cart", cart);
+				template="cart.html";
 			}
 			if(page.equals("addToCart")) {
 				String id = request.getParameter("bookId");
@@ -378,6 +380,13 @@ public class BookstoreServlet extends HttpServlet {
 				Admin a = new Admin("","","","",Status.VERIFIED);
 				List<User> userSq = a.getUsers();
 				root.put("userSq", userSq);
+				if(page.equals("editBookForm")) {
+					String id = request.getParameter("editBookId");
+					b = bookstoreLogicImpl.getBook("book_id", id);
+					root.put("book", b);
+					
+					template="viewBook.html";
+				}
 				if (page.equals("addBook")) {
 					//attempting to add book
 					String title = request.getParameter("title");
