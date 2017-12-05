@@ -423,6 +423,7 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("bookSq", bookSq);
 					
 				}
+				
 				if(page.equals("editPromoView")) {
 					String editPromoId = request.getParameter("editPromoId");
 					String code = request.getParameter("code");
@@ -541,8 +542,8 @@ public class BookstoreServlet extends HttpServlet {
 				if(page.equals("deletePromo")) {
 					String id = request.getParameter("deletePromoId");
 					int del = a.deletePromo(id);
-					List<Promotion> p = getPromotionList(bookstoreLogicImpl);
-					root.put("promotion", p);
+					promoSq = getPromotionList(bookstoreLogicImpl);
+					root.put("promoSq", promoSq);
 					template = "editPromotions.html";
 				}
 				
