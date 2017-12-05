@@ -1,11 +1,11 @@
 package objectlayer;
-import java.util.Date;	//should this be a Calendar though? Date is deprec.
+import java.time.LocalDateTime;	//should this be a Calendar though? Date is deprec.
 
 public class Promotion {
 	
 	private  String code;
 	private double percentage;
-	private Date expiration;
+	private String expiration;
 	private int id;
 	
 	public int getId() {
@@ -14,7 +14,7 @@ public class Promotion {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Promotion(String code, double percentage, Date expiration) {
+	public Promotion(String code, double percentage, String expiration) {
 		this.code = code;
 		this.percentage=percentage;
 		this.expiration=expiration;
@@ -35,11 +35,11 @@ public class Promotion {
 		this.percentage = percentage;
 	}
 	
-	public Date getExpiration() {
+	public String getExpiration() {
 		return expiration;
 	}
 	
-	public void setExpiration(Date expiration) {
+	public void setExpiration(String expiration) {
 		this.expiration = expiration;
 	}
 
