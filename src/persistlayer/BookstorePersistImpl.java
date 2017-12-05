@@ -226,7 +226,7 @@ public class BookstorePersistImpl {
 	}
 	
 	public int editPromo(Promotion p) {
-		String sql = "UPDATE promotion SET code='" + p.getCode() + "', expiration='" + p.getExpiration() + "', percentage='" + p.getPercentage() + "';";
+		String sql = "UPDATE promotion SET code='" + p.getCode() + "', expiration='" + p.getExpiration() + "', percentage='" + p.getPercentage() + "' where id = '" + p.getId() +"';";
 		return DbAccessImpl.update(sql);
 	}
 	
