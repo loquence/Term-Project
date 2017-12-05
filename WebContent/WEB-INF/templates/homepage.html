@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <link href="style.css" type="text/css" rel="stylesheet"/>
+    <link href="styles.css" type="text/css" rel="stylesheet"/>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -37,43 +37,38 @@
     </head>
     <body>
         <#include "navbar.html">
-        <div class="container">
-           <#list bookSq as bq>
-           		<#if bq?index< 12 >
-           		<#if bq?index%4==0>
-           		<div class="col-md-4">
-           		</#if> 
-           			<div class="media hoverDiv" onclick="document.getElementById('${bq.id?html}').submit()">
-           				<form action="BookstoreServlet" method="POST" id="${bq.id?html}">
-           					<input type="hidden" name="page" value="viewBook">
-           					<input type="hidden" name="viewBookId" value="${bq.id?html}">
-           				</form>
-                            <div class="media-left">   
-                            <img width="150" height="150" src="${bq.cover?html}">
-                            </div> 
-                            <div class="media-body">
-                                <p>${bq.title}</p>
-                                <p>${bq.author}</p>
-                            <p>$${bq.sellingPrice}</p>
-                         <#if type??>
-                         <#if type != "ADMIN">
-                         <form action="BookstoreServlet" method="POST" id="addToCartForm">
-                         <p><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span></button></p>
-                         <input type="hidden" name="page" value="addToCart">
-                         <input type="hidden" name="bookId" value="${bq.id?html}">
-                         </form>
-                         </#if>
-                         </#if>
-                     </div>    
-                	</div>
-                <#if bq?index%4==3>	
-                </div>
-                </#if>
-                <#else>
-                	<#break>
-                </#if>
-           </#list>
-        </div>
+       
+        
+         <div id="image"><img src="http://www.websterschools.org/tfiles/folder1083/Library%20secondary.jpg" alt=""/></div>
+        <br><br>
+        
+        <div class="content">
+            <div class="products">
+                <ul>
+                <#list bookSq as bq>
+           		
+                    <li>
+                        <div class="product" onclick="document.getElementById('${bq.id?html}').submit()">
+                            <a href="#" class="info">
+                                <span class="holder">
+                                    <img src="${bq.cover?html}" alt="" />
+                                    <span class="book-name">${bq.title}</span>
+                                    <span class="author">by ${bq.author}</span>
+                                    <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9734;</span>
+                                    <span class="price">$${bq.sellingPrice}</span>
+                                </span>
+                            </a>
+                        </div>
+                        <form method="POST" action="BookstoreServlet" id="${bq.id?html}">
+                        	<input type="hidden" name="page" value="viewBook">
+                        	<input type="hidden" name="viewBookId" value="${bq.id?html}">
+                        </form>
+                    </li>
+                    
+                    </#list>
+                 </ul>
+               </div>
+          </div>
         
     </body>
 </html>

@@ -40,23 +40,23 @@
                 	<th>RATING</th>
                 	
             	</tr>
-            	<#list book as b>
-            	<tr onclick="document.getElementById('${bookSq.id?html}').submit()">
-                	<td>${bookSq.ISBN}</td>
-                	<td>${bookSq.title}</td>
-                	<td>${bookSq.genre}</td>
-                	<td>${bookSq.author}</td>
-                	<td>${bookSq.edition}</td>
-                	<td>${bookSq.publisher}</td>
-                	<td>${bookSq.publicationYear}</td>
-                	<td>${bookSq.minThreshold}</td>
-                	<td>$${bookSq.buyingPrice}</td>
-                	<td>$${bookSq.sellingPrice}</td>
-                	<td>${bookSq.cover}</td>
+            	<#list bookSq as b>
+            	<tr onclick="document.getElementById('${b.id?html}').submit()">
+                	<td>${b.ISBN}</td>
+                	<td>${b.title}</td>
+                	<td>${b.genre}</td>
+                	<td>${b.author}</td>
+                	<td>${b.edition}</td>
+                	<td>${b.publisher}</td>
+                	<td>${b.publicationYear}</td>
+                	<td>${b.minThreshold}</td>
+                	<td>$${b.buyingPrice}</td>
+                	<td>$${b.sellingPrice}</td>
+                	<td>${b.cover}</td>
                 	<td>TEMP</td>
-                	<form action="BookstoreServlet" method="POST" id="${bookSq.id?html}">
+                	<form action="BookstoreServlet" method="POST" id="${b.id?html}">
                 		<input type="hidden" name="page" value="editBookForm">
-                		<input type="hidden" name="editBookId" value="${bookSq.id?html}">
+                		<input type="hidden" name="editBookId" value="${b.id?html}">
                 	</form>
                 	
             	</tr>
