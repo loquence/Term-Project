@@ -209,4 +209,9 @@ public class BookstorePersistImpl {
 		return c;
 	}
 	
+	public int editBook(Book b) {
+		String sql = "UPDATE book SET isbn='" +b.getISBN() + "', title='" + b.getTitle() + "', category='" + b.getGenre() + "', author='" + b.getAuthor() + "', edition='" + b.getEdition() + "', publisher='" + b.getPublisher() + "', pub_yet='" + b.getPublicationYear() + "', min_thresh='" + b.getMinThreshold() + "', buying_price='" + b.getBuyingPrice() + "', selling_price=''" + b.getSellingPrice() + "', quantity='" + b.getQuantity() + "', rating='" + b.getRating() + "';"; 
+		return DbAccessImpl.update(sql);
+	}
+	
 }

@@ -27,4 +27,8 @@ public class Admin extends User {
 		return getPersist().deleteObject(id, ObjectType.users);
 	}
 	
+	public int editBook(Book b) {
+		return getPersist().editBook(b);
+	}
+	
 }

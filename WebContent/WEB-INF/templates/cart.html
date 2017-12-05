@@ -36,7 +36,7 @@
                 	<tr style="background:white">
                 	<td>${b.title} <span class="badge">${b.cartQuantity}</span></td>
                 	<td>${b.author}</td>
-                	<td>$${b.sellingPrice * b.cartQuantity}<form action="BookstoreServlet" method="POST" id="${b.id?html}" onclick="clicked(event)" class="pull-right">
+                	<td>$${(b.sellingPrice * b.cartQuantity)?string(",##0.00")}<form action="BookstoreServlet" method="POST" id="${b.id?html}" onclick="clicked(event)" class="pull-right">
                 							<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"></span></button>
                 							<input type="hidden" name="page" value="deleteFromCart">
                 							<input type="hidden" name="deleteBookId" value="${b.id}">
@@ -47,7 +47,7 @@
                 <tr style="background:white">
                 <td></td>
                 <td>Total:</td>
-                <td>$${cart.totalPrice}
+                <td>$${cart.totalPrice?string(",##0.00")}
                 </tr>
             </table>
                 

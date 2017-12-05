@@ -43,10 +43,10 @@
                 <h2>Genre: ${book.genre} </h2>
                 <ul>
                     <li>By ${book.author}</li>
-                    <li>Publication Year: ${book.publicationYear}</li>
-                    <li>In Stock: ${book.quantity}</li>
+                    <li>Publication Year: ${book.publicationYear?c}</li>
+                    <li>In Stock: ${book.quantity?c}</li>
                     <li>ISBN ${book.ISBN}</li>
-                    <li>Price: $${book.sellingPrice}</li>
+                    <li>Price: $${book.sellingPrice?string(",##0.00")}</li>
                 </ul>
 				<#if type != "ADMIN">
 				<form method="POST" action="BookstoreServlet">

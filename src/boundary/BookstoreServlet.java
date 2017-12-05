@@ -394,12 +394,39 @@ public class BookstoreServlet extends HttpServlet {
 				Admin a = new Admin("","","","",Status.VERIFIED);
 				List<User> userSq = a.getUsers();
 				root.put("userSq", userSq);
+				if(page.equals("editBookView")) {
+					String editBookId = request.getParameter("editBookId");
+					String title = request.getParameter("title");
+					String author = request.getParameter("author");
+					String publisher = request.getParameter("publisher");
+					String genre = request.getParameter("genre");
+					String ISBN = request.getParameter("isbn");
+					String pubYear = request.getParameter("pubYear");
+					String edition = request.getParameter("edition");
+					String threshold = request.getParameter("min");
+					String sellP = request.getParameter("sellPrice");
+					String buyP = request.getParameter("buyPrice");
+					String quant = request.getParameter("quantity");
+					int rat = Integer.parseInt(request.getParameter("rat"));
+					
+					Integer pubY = Integer.valueOf(pubYear);
+					Integer ed = Integer.valueOf(edition);
+					Integer minThresh = Integer.valueOf(threshold);
+					Integer quantity = Integer.valueOf(quant);
+					double sell = Double.parseDouble(sellP);
+					double buy = Double.parseDouble(buyP);
+					b = new Book(ISBN, title, genre, author, ed, publisher, pubY, quantity, /*int rating,*/ "", sell, buy, minThresh);
+					b.setId(Integer.parseInt(editBookId));
+					b.setRating(rat);
+					template="editBook.html";
+					a.editBook(b);
+				}
 				if(page.equals("editBookForm")) {
 					String id = request.getParameter("editBookId");
 					b = bookstoreLogicImpl.getBook("book_id", id);
 					root.put("book", b);
 					
-					template="viewBook.html";
+					template="editBookView.html";
 				}
 				if (page.equals("addBook")) {
 					//attempting to add book
