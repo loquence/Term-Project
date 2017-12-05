@@ -1,15 +1,46 @@
 package objectlayer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShoppingCart {
 
 	private int customerID;
 	private double totalPrice;
+	private int number;
+	private List<Integer> bookIdList;
 	
-	public ShoppingCart(int customerId, double totalPrice) {
+	public ShoppingCart(int customerId, double totalPrice, int number, List<Integer> list) {
 		this.customerID = customerId;
 		this.totalPrice = totalPrice;
+		this.number=number;
+		bookIdList = list;
 	}
 	
+	public List<Integer> getBookIdList() {
+		return bookIdList;
+	}
+
+	public void setBookIdList(List<Integer> bookIdList) {
+		this.bookIdList = bookIdList;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
 	public int getCustomerID() {
 		return customerID;
 	}

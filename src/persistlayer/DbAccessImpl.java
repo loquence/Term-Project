@@ -212,7 +212,7 @@ public class DbAccessImpl {
 			case cart:
 				ShoppingCart sc;
 				while(rs.next()) {
-					sc = new ShoppingCart(rs.getInt("cart_id"),rs.getDouble("totalPrice"));
+					sc = new ShoppingCart(rs.getInt("cart_id"),rs.getDouble("totalPrice"),rs.getInt("number"), null);
 					ls.add((T) sc);
 				}
 				break;
@@ -224,6 +224,10 @@ public class DbAccessImpl {
 					ls.add((T) p);
 				}
 				break;
+			case bookId:
+				while(rs.next()) {
+					ls.add((T) (Integer) rs.getInt("book_id"));
+				}
 		}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -261,7 +265,7 @@ public class DbAccessImpl {
 			case cart:
 				ShoppingCart sc = null;
 				while(rs.next()) {
-					sc = new ShoppingCart(rs.getInt("cart_id"),rs.getDouble("totalPrice"));
+					sc = new ShoppingCart(rs.getInt("cart_id"),rs.getDouble("totalPrice"), rs.getInt("number"), null);
 				}
 				return (T) sc;
 			case promotion:

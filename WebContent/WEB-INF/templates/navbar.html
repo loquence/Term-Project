@@ -40,7 +40,13 @@
                         <ul class="nav navbar-nav navbar-right">
                         	<#if type??>
                         		<#if type =="CUSTOMER">
-                            <li><a href="#"><span class="glyphicon glyphicon-shopping-cart">  Cart</span></a></li>
+                            <li>
+                            <a href="javascript:{}" onclick="document.getElementById('cartForm').submit()"><span class="glyphicon glyphicon-shopping-cart">  Cart <#if cart??><span class="badge">${cart.number}</span></#if></span></a>
+                            <form action="BookstoreServlet" method="post" id="cartForm">
+                            	<input type="hidden" name="page" value="cart">
+                            	<input type="hidden" name="userId" value="${id?html}">
+                            </form>
+                            </li>
                             <li>
                             <a href="javascript:{}" onclick="document.getElementById('profileForm').submit()"><span class="glyphicon glyphicon-user"></span>  Profile</a>
                             <form action="BookstoreServlet" method="POST" id="profileForm">

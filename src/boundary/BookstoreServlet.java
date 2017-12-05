@@ -50,8 +50,11 @@ public class BookstoreServlet extends HttpServlet {
     private TemplateProcessor processor;
     private static String templateDir = "/WEB-INF/templates"; 
     private BookstoreLogicImpl bookstoreLogicImpl;
-    DefaultObjectWrapperBuilder db;
-    SimpleHash root;
+    private DefaultObjectWrapperBuilder db;
+    private SimpleHash root;
+    private List<Book> bookSq;
+    private Book b;
+    private ShoppingCart cart;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -74,6 +77,7 @@ public class BookstoreServlet extends HttpServlet {
 		db = new DefaultObjectWrapperBuilder(processor.getCfg().getVersion());//object wrapper to be used for Freemarker Hashmap
 		root = new SimpleHash(db.build());//the hashmap
 		bookstoreLogicImpl = new BookstoreLogicImpl();
+		cart = new ShoppingCart(0,0,0,null);
 	}
 
 	/**
@@ -115,7 +119,6 @@ public class BookstoreServlet extends HttpServlet {
 		 * May not be used in future versions of this project as the persistLayer
 		 * is going to be accessed from the Object Layer instead of the Logic Layer
 		 */
-		BookstoreLogicImpl bookstoreLogicImpl = new BookstoreLogicImpl();
 		if(page.equals("email")) {
 			checkEmail(request,response);
 		}
@@ -255,11 +258,18 @@ public class BookstoreServlet extends HttpServlet {
 			
 			if (u != null ) {
 				if(u.getStatus().equals(Status.VERIFIED)) {
-					
+					if(u.getType().equals(UserType.CUSTOMER)) {
+						Customer temp = new Customer(u);
+						System.out.println(temp.getId());
+						
+						cart = temp.getCart();
+						root.put("cart", cart);
+					}
 					HttpSession session = request.getSession(true);//getting the current session on startup
 					session.setMaxInactiveInterval(1800);//Valid for 1800 seconds
 					loadHomepage(session,template,root,u);
-					List<Book> bookSq = getBookList(bookstoreLogicImpl);
+					bookSq = getBookList(bookstoreLogicImpl);
+					
 					root.put("bookSq", bookSq);
 					template="homepage.html";
 				}
@@ -296,8 +306,14 @@ public class BookstoreServlet extends HttpServlet {
 				//add cookie?? << not sure if that will work with freemarker template
 				HttpSession session = request.getSession(true);//getting the current session on startup
 				session.setMaxInactiveInterval(1800);
+				if(u.getType().equals(UserType.CUSTOMER)) {
+					Customer temp = new Customer(u);
+					cart = temp.getCart();
+					root.put("cart", cart);
+					session.setAttribute("cartNumber", cart.getNumber() );
+				}
 				loadHomepage(session,template,root,u);
-				List<Book> bookSq = getBookList(bookstoreLogicImpl);
+				bookSq = getBookList(bookstoreLogicImpl);
 				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
@@ -318,23 +334,33 @@ public class BookstoreServlet extends HttpServlet {
 			root.put("user", session.getAttribute("fname"));
 			root.put("type", session.getAttribute("type"));
 			root.put("id", session.getAttribute("id"));
-			Customer u = new Customer("","","","",null);
 			
+			Customer u = new Customer("","","","",null);
+			u.setId((int) session.getAttribute("id"));
+			if(page.equals("cart")) {
+				bookSq = u.getBooksInCart();
+				root.put("bookSq", bookSq);
+				template="template.html";
+			}
 			if(page.equals("addToCart")) {
-				String id =request.getParameter("bookId");
-				u.setId((int)session.getAttribute("id"));
+				String id = request.getParameter("bookId");
+				u.setId((int) session.getAttribute("id"));
+				cart = u.addToCart(id);
+				root.put("cart", cart);
+				template="homepage.html";
+				
 			}
 			
 			if (page.equals("viewBook")) {
 				String id = request.getParameter("viewBookId");
-				Book b = bookstoreLogicImpl.getBook("book_id", id);
+				b = bookstoreLogicImpl.getBook("book_id", id);
 				root.put("book", b);
 				
 				template="viewBook.html";
 			}
 			if (page.equals("goHome")) {
-				
-				root.put("bookSq", getBookList(bookstoreLogicImpl));
+				bookSq = getBookList(bookstoreLogicImpl);
+				root.put("bookSq", bookSq);
 				template="homepage.html";
 			}
 			if (page.equals("profile")) {
@@ -376,14 +402,14 @@ public class BookstoreServlet extends HttpServlet {
 					double sell = Double.parseDouble(sellP);
 					double buy = Double.parseDouble(buyP);
 					
-					Book b = new Book(ISBN, title, genre, author, ed, publisher, pubY, quantity, /*int rating,*/ cover, sell, buy, minThresh);
+					b = new Book(ISBN, title, genre, author, ed, publisher, pubY, quantity, /*int rating,*/ cover, sell, buy, minThresh);
 					int check = a.addBook(b);
 					template="addBook.html";
 					
 				}
 				if (page.equals("editBooks")) {
-					List<Book> b = getBookList(bookstoreLogicImpl);
-					root.put("book", b);
+					bookSq = getBookList(bookstoreLogicImpl);
+					root.put("bookSq", bookSq);
 					template="editBook.html";
 					
 				}
@@ -427,7 +453,7 @@ public class BookstoreServlet extends HttpServlet {
 			}
 			if (page.equals("logout")) {
 				session.invalidate();
-				
+				root = new SimpleHash(db.build());
 				
 			}
 			

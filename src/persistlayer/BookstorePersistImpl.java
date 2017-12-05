@@ -154,6 +154,35 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.update(sql);
 	}
 	
+	public ShoppingCart addToCart(String id, int userId) {
+		String sql = "INSERT into books_in_cart (book_id,cart_id) VALUES ('" + id + "','" + userId + "');";
+		String sql2 = "SELECT * from cart where cart_id='" + userId + "';";
+		String getBooksList = "SELECT * from books_in_cart where cart_id='" + userId + "';";
+		
+		int check = DbAccessImpl.update(sql);
+		Book b = getObject("book_id",ObjectType.book,id);
+		
+		if (check > 0) {
+			ShoppingCart c = DbAccessImpl.getObject(sql2, ObjectType.cart, true);
+			double price = c.getTotal();
+			int number = c.getNumber();
+			++number;
+			price = price + b.getSellingPrice();
+			List<Integer> ls = DbAccessImpl.getList(getBooksList, ObjectType.bookId);
+			String updateCart = "UPDATE cart SET totalPrice='" + price + "', number='" + number + "' where cart_id='" + c.getCustomerID() + "';";
+			DbAccessImpl.update(updateCart);
+			c = DbAccessImpl.getObject(sql2, ObjectType.cart, true);
+			c.setBookIdList(ls);
+		}
+		return null;
+	}
+	
+	public List<Book> getBooksInCart(Customer c){
+		String sql = "SELECT * FROM book join books_in_cart on book.book_id = books_in_cart.book_id where cart_id='" + c.getId() + "';";
+		return DbAccessImpl.getList(sql, ObjectType.book);
+		
+	}
+	
 	
 	
 }

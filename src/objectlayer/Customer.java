@@ -1,8 +1,10 @@
 package objectlayer;
 
 import java.util.Date;
+import java.util.List;
 
 import persistlayer.BookstorePersistImpl;
+import persistlayer.DbAccessImpl;
 
 /**
  * Customer class implementation
@@ -17,6 +19,7 @@ public class Customer extends User {
 	private String cardType;
 	private String cardNumber;
 	private Date cardExpDate;
+	private ShoppingCart cart;
 	
 	public String getCardType() {
 		return cardType;
@@ -41,7 +44,12 @@ public class Customer extends User {
 	public void setCardExpDate(Date cardExpDate) {
 		this.cardExpDate = cardExpDate;
 	}
-
+	
+	public Customer(User u) {
+		super(u.getFname(),u.getLname(),u.getEmail(),u.getPwd(),u.getStatus(),UserType.CUSTOMER);
+		setId(u.getId());
+	}
+	
 	public Customer(String fname, String lname, String email, String pwd, Status status) {
 		super(fname, lname, email, pwd, status, UserType.CUSTOMER);
 		
@@ -72,6 +80,21 @@ public class Customer extends User {
 	
 	public Customer getUser(String id) {
 		return getPersist().getCustomer(id);
+	}
+	
+	public ShoppingCart addToCart(String id) {
+		return getPersist().addToCart(id, this.getId());
+	}
+	
+	public ShoppingCart getCart() {
+		String id = "" + this.getId();
+		
+		ShoppingCart c = getPersist().getObject("cart_id", ObjectType.cart, id);
+		return c;
+	}
+	
+	public List<Book> getBooksInCart(){
+		return getPersist().getBooksInCart(this);
 	}
 
 	
