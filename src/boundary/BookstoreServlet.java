@@ -56,6 +56,8 @@ public class BookstoreServlet extends HttpServlet {
     private Book b;
     private ShoppingCart cart;
     private List<Book> bookCart;
+    private List<Promotion> promoSq;
+    private Promotion p;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -390,6 +392,7 @@ public class BookstoreServlet extends HttpServlet {
 				Admin a = new Admin("","","","",Status.VERIFIED);
 				List<User> userSq = a.getUsers();
 				root.put("userSq", userSq);
+				
 				if(page.equals("editBookView")) {
 					String editBookId = request.getParameter("editBookId");
 					String title = request.getParameter("title");
@@ -420,12 +423,54 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("bookSq", bookSq);
 					
 				}
+				if(page.equals("editPromoView")) {
+					String editPromoId = request.getParameter("editPromoId");
+					String code = request.getParameter("code");
+					String expDate = request.getParameter("exp");
+					String percent = request.getParameter("percent");
+					Double percentage;
+					
+					if(percent.length() < 2) {
+						percent = "0" + percent;
+					}
+					
+					percent = "0." + percent;
+					
+					try {
+						percentage = Double.parseDouble(percent);
+					}
+					catch (Exception e) {
+						StringBuilder s = new StringBuilder(percent);
+						for(int i = 2; i < s.length(); ++i) {
+							if(s.charAt(i) == '.') {
+								s.deleteCharAt(i);
+							}
+						}
+						String per = s.toString();
+						percentage = Double.parseDouble(per);
+					}
+					
+					Promotion p = new Promotion(code, percentage, expDate);
+					p.setId(Integer.parseInt(editPromoId));
+					template="editPromotions.html";
+					a.editPromo(p);
+					promoSq = getPromotionList(bookstoreLogicImpl);
+					root.put("promoSq", promoSq);
+					
+				}
+				
 				if(page.equals("editBookForm")) {
 					String id = request.getParameter("editBookId");
 					b = bookstoreLogicImpl.getBook("book_id", id);
 					root.put("book", b);
-					
 					template="editBookView.html";
+				}
+				
+				if(page.equals("editPromoForm")) {
+					String id = request.getParameter("editPromoId");
+					p = bookstoreLogicImpl.getPromotion("id", id);
+					root.put("promotion", p);
+					template = "editPromoView.html";
 				}
 				
 				if (page.equals("addBook")) {
@@ -493,6 +538,14 @@ public class BookstoreServlet extends HttpServlet {
 					template="editUsers.html";
 				}
 				
+				if(page.equals("deletePromo")) {
+					String id = request.getParameter("deletePromoId");
+					int del = a.deletePromo(id);
+					List<Promotion> p = getPromotionList(bookstoreLogicImpl);
+					root.put("promotion", p);
+					template = "editPromotions.html";
+				}
+				
 				if (page.equals("unSuspendUser")) {
 					String id= request.getParameter("unSuspendUserId");
 					int unSuspend = a.updateUser(id, Status.VERIFIED);
@@ -536,8 +589,8 @@ public class BookstoreServlet extends HttpServlet {
 				}
 				
 				if (page.equals("editPromotions")) {
-					List<Promotion> p = getPromotionList(bookstoreLogicImpl);
-					root.put("promotion", p);
+					promoSq = getPromotionList(bookstoreLogicImpl);
+					root.put("promoSq", promoSq);
 					template="editPromotions.html";
 				}
 			}
