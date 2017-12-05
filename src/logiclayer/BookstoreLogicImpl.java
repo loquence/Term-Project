@@ -37,6 +37,10 @@ public class BookstoreLogicImpl {
 		return bookstorePersist.getObject(column, ObjectType.book, value);
 	}
 	
+	public <T> T getPromotion(String column, String value) {
+		return bookstorePersist.getObject(column, ObjectType.promotion, value);
+	}
+	
 	
 	
 	/*public int updateVerification(Status status, String email){
