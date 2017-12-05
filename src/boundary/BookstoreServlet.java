@@ -56,12 +56,10 @@ public class BookstoreServlet extends HttpServlet {
     private Book b;
     private ShoppingCart cart;
     private List<Book> bookCart;
-<<<<<<< HEAD
     private List<Order> or;
-=======
     private List<Promotion> promoSq;
     private Promotion p;
->>>>>>> 34a1b80087edb176bfb4604827b2d904388f97ff
+
        
     /**
      * @see HttpServlet#HttpServlet()
