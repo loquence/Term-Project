@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link href="editBook.css" type="text/css" rel="stylesheet"/>
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   
+       
+    <title>Edit Promotions</title>
+    <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/>    
+    </head>
+    
+    <body>
+    	<#include "navbar.html">
+		<div class="container">  
+			
+        	<table style ="width: 100%">
+            	<tr>	
+            		<th>Promo ID</th>
+                	<th>Expiration</th>
+                	<th>Activation Code</th>
+                	<th>Percentage</th>
+                	
+            	</tr>
+            	<tr>
+
+
+
+
+
+
+				<#list promotion as p>
+            		<tr onclick="document.getElementById('${p.id?html}').submit()">
+            		<td>${p.id}</td>
+            		<td>${p.expiration}</td>
+            		<td>${p.code}</td>
+            		<td>${p.percentage}</td>
+            		
+                	<td><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button></td>
+                	
+
+					<form action="BookstoreServlet" method="POST" id="${p.id?html}">
+                		<input type="hidden" name="page" value="editPromoForm">
+                		<input type="hidden" name="editPromoId" value="${p.id?html}">
+                	</form>
+                	
+            		</tr>
+            	</#list>
+            	
+            	
+            	
+            	
+            	
+                	
+                	
+            	</tr>
+        	</table>
+        	</div>
+        </div>
+    
+    </body>
+    
+</html>

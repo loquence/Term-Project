@@ -74,9 +74,18 @@
                     						<a href="javascript:{}" onclick="document.getElementById('editBooksForm').submit()">Edit Books</a> 
       									</li>
       									<li>
-      										<a>Edit Promotions</a>
+      										<form action="BookstoreServlet" method="POST" id="editPromoForm">
+                    							<input type="hidden" name="page" value="editPromotions">
+                    						</form>
+                    						<a href="javascript:{}" onclick="document.getElementById('editPromoForm').submit()">Edit Promotions</a> 
       									</li>
       									<li>
+      										<form action="BookstoreServlet" method="POST" id="addPromoForm">
+                    							<input type="hidden" name="page" value="addPromos">
+                    						</form>
+                    						<a href="javascript:{}" onclick="document.getElementById('addPromoForm').submit()">Add Promotion</a> 
+      									</li>
+      			<li>
       										<form method="POST" action="BookstoreServlet" id="addBookForm">
                     						<input type="hidden" name="page" value="addBookPage">
                     						</form>
@@ -98,4 +107,3 @@
                 
             </div>
         </nav>
- 
