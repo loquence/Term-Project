@@ -219,7 +219,7 @@ public class DbAccessImpl {
 			case promotion:
 				Promotion p;
 				while(rs.next()) {
-					p = new Promotion(rs.getString("code"),rs.getDouble("percentage"),rs.getDate("expiration"));
+					p = new Promotion(rs.getString("code"),rs.getDouble("percentage"),rs.getString("expiration"));
 					p.setId(rs.getInt("id"));
 					ls.add((T) p);
 				}
@@ -228,7 +228,7 @@ public class DbAccessImpl {
 				while(rs.next()) {
 					ls.add((T) (Integer) rs.getInt("book_id"));
 				}
-		}
+			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -271,7 +271,7 @@ public class DbAccessImpl {
 			case promotion:
 				Promotion p = null;
 				while(rs.next()) {
-					p = new Promotion(rs.getString("code"),rs.getDouble("percentage"),rs.getDate("expiration"));
+					p = new Promotion(rs.getString("code"),rs.getDouble("percentage"),rs.getString("expiration"));
 					p.setId(rs.getInt("id"));
 				}
 				return (T) p;
