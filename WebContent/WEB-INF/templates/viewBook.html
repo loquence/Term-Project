@@ -27,10 +27,12 @@
                 <h1>${book.title}
                 <div class="pull-right">
                 <#list 1..book.rating as b>
+                					<#if book.rating < 6>
                                     <span>&#9733;</span>
+                                    </#if>
                                     </#list>
                                     <#assign x=book.rating+1>
-                                    <#if book.rating != 5>
+                                    <#if book.rating < 5>
                                     <#list x..5 as b>
                                     <span>&#9734;</span>
                                     </#list>

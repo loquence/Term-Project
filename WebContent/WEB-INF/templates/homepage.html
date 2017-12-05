@@ -55,10 +55,12 @@
                                     <span class="book-name">${bq.title}</span>
                                     <span class="author">by ${bq.author}</span>
                                     <#list 1..bq.rating as b>
+                                    <#if bq.rating < 6>
                                     <span>&#9733;</span>
+                                    </#if>
                                     </#list>
                                     <#assign x=bq.rating+1>
-                                    <#if bq.rating != 5>
+                                    <#if bq.rating < 5>
                                     <#list x..5 as b>
                                     <span>&#9734;</span>
                                     </#list>
