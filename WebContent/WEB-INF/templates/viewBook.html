@@ -20,27 +20,45 @@
 </head>
 <body>
 	<#include "navbar.html">
-		<div class="media">
-                        <div class="media-left">   
-                            <img width="500" height="500" src="${book.cover?html}">
-                            </div> 
-                            <div class="media-body">
-                                <p>Title: ${book.title}</p>
-                                <p>Author: ${book.author}</p>
-                            	<p>Price: $${book.sellingPrice}</p>
-                            	<p>ISBN: ${book.ISBN}</p>
-                            	<p>Genre: ${book.genre}</p>
-                            	<p>Publisher: ${book.publisher}</p>
-                            	<p>Year: ${book.publicationYear}</p>
-                            	<p>In Stock: ${book.quantity}</p>
-                            <form action="BookstoreServlet" method="POST" id="addToCartForm">
-                         		<p><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span></button></p>
-                         		<input type="hidden" name="page" value="addToCart">
-                         		<input type="hidden" name="bookId" value="${book.id?html}">
-                        		 
-                         	</form>
-                            </div>   
-                        </div>
+		
+                        
+       <div id="view-content">
+            <div id="view-content-right">
+                <h1>${book.title}
+                <div class="pull-right">
+                <#list 1..book.rating as b>
+                                    <span>&#9733;</span>
+                                    </#list>
+                                    <#assign x=book.rating+1>
+                                    <#if book.rating != 5>
+                                    <#list x..5 as b>
+                                    <span>&#9734;</span>
+                                    </#list>
+                                    </#if>
+                </div>
+                </h1>
+                <div class="image_panel"><img src="${book.cover}" alt="CSS Template" width="100" height="150" /></div>
+                <h2>Genre: ${book.genre} </h2>
+                <ul>
+                    <li>By ${book.author}</li>
+                    <li>Publication Year: ${book.publicationYear}</li>
+                    <li>In Stock: ${book.quantity}</li>
+                    <li>ISBN ${book.ISBN}</li>
+                    <li>Price: $${book.sellingPrice}</li>
+                </ul>
+				<#if type != "ADMIN">
+				<form method="POST" action="BookstoreServlet">
+               <button type="submit" class="btn-primary btn-lg bt-block" style="width:100%">Add to Cart <span class="glyphicon glyphicon-shopping-cart"> </span></button> 
+                <input type="hidden" name="page" value="addToCart">
+                <input type="hidden" name="bookId" value="${book.id?html}">
+                </form>
+                </#if>
+                <div class="cleaner_with_height">&nbsp;</div>
+
+            </div> <!-- end of content right -->
+
+            <div class="cleaner_with_height">&nbsp;</div>
+        </div> <!-- end of content -->
 
 </body>
 </html>

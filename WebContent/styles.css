@@ -102,3 +102,47 @@ img[src="http://www.websterschools.org/tfiles/folder1083/Library%20secondary.jpg
     font-size: 11px; 
     line-height: 16px; 
     color: white; }
+ 
+ #view-content #view-content-right {
+	float: center;
+	width: 670px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid black;
+}
+
+#view-content-right h1 {
+	padding: 10px;
+	margin: 0 0 20px 0;
+	font-size: 15px;
+	color: white;
+	background: black;
+}
+
+#view-content-right h2 {
+	padding: 0 0 0 0;
+	margin: 0 0 20px 0;
+	font-size: 12px;
+	color: #FF4136;
+}
+
+#view-content-right ul {
+	margin: 0 0 20px 0;
+	padding: 0 0 0 20px;
+	list-style: none;
+}
+
+#view-content-right li {
+	padding: 0 0 3px 0;
+}
+
+#view-content-right .image_panel {
+	float: left;
+	width: 100px;
+	margin-right: 20px;
+}
+
+#view-content-right p {
+	text-align: justify;
+	padding: 0 0 8px 0;
+}

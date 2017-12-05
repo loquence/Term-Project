@@ -18,7 +18,16 @@ public class Book {
 	private double buyingPrice;
 	private int minThreshold;
 	private int id;
+	private int cartQuantity;
 	
+	public int getCartQuantity() {
+		return cartQuantity;
+	}
+
+	public void setCartQuantity(int cartQuantity) {
+		this.cartQuantity = cartQuantity;
+	}
+
 	public int getId() {
 		return id;
 	}

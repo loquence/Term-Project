@@ -55,6 +55,7 @@ public class BookstoreServlet extends HttpServlet {
     private List<Book> bookSq;
     private Book b;
     private ShoppingCart cart;
+    private List<Book> bookCart;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -337,18 +338,31 @@ public class BookstoreServlet extends HttpServlet {
 			
 			Customer u = new Customer("","","","",null);
 			u.setId((int) session.getAttribute("id"));
-			if(page.equals("cart")) {
-				bookSq = u.getBooksInCart();
+			if (session.getAttribute("type").equals(UserType.CUSTOMER)) {
 				cart = u.getCart();
-				root.put("bookSq", bookSq);
+				bookCart = u.getBooksInCart();
 				root.put("cart", cart);
+				root.put("bookCart", bookCart);
+			}
+			if(page.equals("deleteFromCart")) {
+				String deleteBookId = request.getParameter("deleteBookId");
+				cart = u.deleteFromCart(deleteBookId);
+				bookCart = u.getBooksInCart();
+				root.put("cart", cart);
+				root.put("bookCart", bookCart);
+				template="cart.html";
+			}
+			if(page.equals("cart")) {
+				
 				template="cart.html";
 			}
 			if(page.equals("addToCart")) {
 				String id = request.getParameter("bookId");
 				u.setId((int) session.getAttribute("id"));
 				cart = u.addToCart(id);
+				bookCart = u.getBooksInCart();
 				root.put("cart", cart);
+				root.put("bookCart", bookCart);
 				template="homepage.html";
 				
 			}

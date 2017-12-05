@@ -57,4 +57,19 @@ public class ShoppingCart {
 		this.customerID = customerID;
 	}
 	
+	public void calculatePriceAndNumber(List<Book> lb) {
+		double price = 0;
+		int num = 0;
+		
+		for (Book b : lb) {
+			for (int i = 0; i <b.getCartQuantity();++i) {
+				price = price + b.getSellingPrice();
+				++num;
+			}
+			
+		}
+		this.number = num;
+		this.totalPrice = price;
+		
+	}
 }

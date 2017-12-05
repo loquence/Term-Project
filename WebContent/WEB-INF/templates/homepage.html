@@ -54,7 +54,15 @@
                                     <img src="${bq.cover?html}" alt="" />
                                     <span class="book-name">${bq.title}</span>
                                     <span class="author">by ${bq.author}</span>
-                                    <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9734;</span>
+                                    <#list 1..bq.rating as b>
+                                    <span>&#9733;</span>
+                                    </#list>
+                                    <#assign x=bq.rating+1>
+                                    <#if bq.rating != 5>
+                                    <#list x..5 as b>
+                                    <span>&#9734;</span>
+                                    </#list>
+                                    </#if>
                                     <span class="price">$${bq.sellingPrice}</span>
                                 </span>
                             </a>

@@ -83,7 +83,7 @@ public class Customer extends User {
 	}
 	
 	public ShoppingCart addToCart(String id) {
-		return getPersist().addToCart(id, this.getId());
+		return getPersist().addToCart(id, this);
 	}
 	
 	public ShoppingCart getCart() {
@@ -95,6 +95,10 @@ public class Customer extends User {
 	
 	public List<Book> getBooksInCart(){
 		return getPersist().getBooksInCart(this);
+	}
+	
+	public ShoppingCart deleteFromCart(String id) {
+		return getPersist().deleteFromCart(id, this);
 	}
 
 	

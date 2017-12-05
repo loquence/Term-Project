@@ -183,7 +183,7 @@ public class DbAccessImpl {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected static <T> List<T> getList(String sql, ObjectType o){
+	protected static <T> List<T> getList(String sql, ObjectType o, Boolean cartFlag){
 		Connection c = connect();
 		ResultSet rs = retrieve(sql, c);
 		
@@ -198,6 +198,10 @@ public class DbAccessImpl {
 					b = new Book(rs.getString("isbn"),rs.getString("title"),rs.getString("category"),rs.getString("author"),rs.getInt("edition"),rs.getString("publisher"), rs.getInt("pub_year"),
 							rs.getInt("quantity"), rs.getString("cover"), rs.getDouble("selling_price"), rs.getDouble("buying_price"),rs.getInt("min_thresh"));
 					b.setId(rs.getInt("book_id"));
+					b.setRating(rs.getInt("rating"));
+					if(cartFlag) {
+					b.setCartQuantity(rs.getInt("cart_quantity"));
+					}
 					ls.add((T) b);
 				}
 				break;
@@ -253,6 +257,7 @@ public class DbAccessImpl {
 					b = new Book(rs.getString("isbn"),rs.getString("title"),rs.getString("category"),rs.getString("author"),rs.getInt("edition"),rs.getString("publisher"), rs.getInt("pub_year"),
 							rs.getInt("quantity"), rs.getString("cover"), rs.getDouble("selling_price"), rs.getDouble("buying_price"),rs.getInt("min_thresh"));
 					b.setId(rs.getInt("book_id"));
+					b.setRating(rs.getInt("rating"));
 				}
 				return (T) b;
 			case users:

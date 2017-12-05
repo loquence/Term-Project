@@ -24,7 +24,7 @@ public class Admin extends User {
 		return getPersist().updateUser(id,s);
 	}
 	public int deleteUser(String id) {
-		return getPersist().deleteUser(id);
+		return getPersist().deleteObject(id, ObjectType.users);
 	}
 	
 }

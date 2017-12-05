@@ -15,7 +15,13 @@
     <script src="script.js"></script>
        
     <title>Users Cart</title>
-    <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/>    
+    <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/>  
+    <script>
+    function clicked(e){
+        	
+			if(!confirm('Are you sure you want to delete?'))e.preventDefault();
+			}
+    </script>  
     </head>
     <body style="background:gray">
         <#include "navbar.html">
@@ -26,11 +32,15 @@
                 	<th>Author</th>
                 	<th>Price</th>
                 </tr>
-                <#list bookSq as b>
+                <#list bookCart as b>
                 	<tr style="background:white">
-                	<td>${b.title}</td>
+                	<td>${b.title} <span class="badge">${b.cartQuantity}</span></td>
                 	<td>${b.author}</td>
-                	<td>$${b.sellingPrice}  <button type="button" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"></span></button></td>
+                	<td>$${b.sellingPrice}<form action="BookstoreServlet" method="POST" id="${b.id?html}" onclick="clicked(event)" class="pull-right">
+                							<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"></span></button>
+                							<input type="hidden" name="page" value="deleteFromCart">
+                							<input type="hidden" name="deleteBookId" value="${b.id}">
+                							</form></td>
                 	</tr>
                 </#list>
                 
@@ -39,7 +49,7 @@
                 <td>Total:</td>
                 <td>$${cart.totalPrice}
                 </tr>
-                
+            </table>
                 
         	</div> 
 	</body>
