@@ -150,7 +150,7 @@ public class BookstorePersistImpl {
 	}
 	
 	public int deleteObject(String id, ObjectType o) {
-		String sql="DELETE from " + o + "where id='" + id + "';";
+		String sql="DELETE from " + o + " where id='" + id + "';";
 		return DbAccessImpl.update(sql);
 	}
 	
