@@ -20,6 +20,14 @@ public class Admin extends User {
 		return getPersist().addPromo(p);
 	}
 	
+	public int editPromo(Promotion p) {
+		return getPersist().editPromo(p);
+	}
+	
+	public int deletePromo(String id) {
+		return getPersist().deleteObject(id, ObjectType.promotion);
+	}
+	
 	public int updateUser(String id, Status s) {
 		return getPersist().updateUser(id,s);
 	}
