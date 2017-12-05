@@ -154,6 +154,11 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.update(sql);
 	}
 	
+	public int addPromo(Promotion p) {
+		String sql = "INSERT INTO promotion (code,percentage,expiration) VALUES " + "('"+p.getCode()+"',"+p.getPercentage()+",'"+p.getExpiration()+"');" ;
+		return DbAccessImpl.create(sql);
+	}
+	
 	public ShoppingCart addToCart(String id, int userId) {
 		String sql = "INSERT into books_in_cart (book_id,cart_id) VALUES ('" + id + "','" + userId + "');";
 		String sql2 = "SELECT * from cart where cart_id='" + userId + "';";
@@ -182,7 +187,5 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.getList(sql, ObjectType.book);
 		
 	}
-	
-	
 	
 }
