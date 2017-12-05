@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link href="styles.css" type="text/css" rel="stylesheet"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./scripts/scripts.js"></script>
+    
+    <script>
+	function clickedEdit(e){
+		if(!confirm('Are you sure you want to edit promotion ${promotion.code?html}? This action cannot be undone.'))e.preventDefault();
+		}
+	function clickedDelete(e){
+		if(!confirm('Are you sure you want to delete promotion ${promotion.code?html}? This action cannot be undone.'))e.preventDefault();
+		}
+    </script>
+       
+    <title>Online Bookstore</title>
+    <link rel="shortcut icon" type="image/png" href="http://weknowyourdreams.com/images/book/book-08.jpg"/>
+    
+</head>
+<body>
+	<#include "navbar.html">
+		 <div class="container">
+            <div class="col-md-6 col-md-offset-3" id="allInputs">
+                <form id="addPromo"action="BookstoreServlet" method="post">
+                    <fieldset>
+                        <legend>Promotion Info</legend>
+                        <div class="input-group form-group">
+                            <label for="title">Code</label>
+                            <input type="text" class="form-control" name="code"id="code" value="${promotion.code?html}"required>
+                        </div>
+						<div class="input-group form-group">
+                            <label for="title">Expiration Date (YYYY-MM-DD)</label>
+                            <input type="text" class="form-control" name="exp"id="exp" value="${promotion.expiration?html}"required>
+                        </div>
+                        <div class="input-group form-group">
+                            <label for="author">Percentage</label>
+                            <input type="text" class="form-control" name="percent"id="percent" value="${promotion.percentage?html}"required>
+                        </div>
+                        <p></p>                        
+                        
+                        <form action="BookstoreServlet" method="post" onclick="clickedEdit(event)">
+                        	<button type="submit" class="btn btn-default" id="addPromoP">Edit Promotion</button>
+                        	<input type="hidden" name="page" value="editPromoView">
+                        	<input type="hidden" name="editPromoId" value="${promotion.id?html}">
+                        </form>
+                        
+                        <form action="BookstoreServlet" method="post" onclick="clickedDelete(event)">
+                        	<button type="submit" class="btn btn-default pull right" id="deletePromo">Delete Promotion</button>
+                       		<input type="hidden" name="page" value="deletePromo">
+                        	<input type="hidden" name="deletePromoId" value="${promotion.id?html}">
+                        </form>
+                        
+              
+                    </fieldset>    
+                </form>
+            </div>    
+        </div>
+
+</body>
+</html>

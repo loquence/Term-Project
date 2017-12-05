@@ -145,7 +145,7 @@ public class BookstorePersistImpl {
 	}
 	
 	public int deleteObject(String id, ObjectType o) {
-		String sql="DELETE from " + o + "where id='" + id + "';";
+		String sql="DELETE from " + o + " where id='" + id + "';";
 		return DbAccessImpl.update(sql);
 	}
 	
@@ -219,7 +219,12 @@ public class BookstorePersistImpl {
 			+ "', rating='" + b.getRating() + "' where book_id='" + b.getId() + "';"; 
 		return DbAccessImpl.update(sql);
 	}
+	public int editPromo(Promotion p) {
+		String sql = "UPDATE promotion SET code='" + p.getCode() + "', expiration='" + p.getExpiration() + "', percentage='" + p.getPercentage() + "' where id = '" + p.getId() +"';";
+		return DbAccessImpl.update(sql);
+	}
 	
+
 	public int updateUserInfo(UserInfo ui, Customer c) {
 		String sql ="SELECT * from user_info where user_id='" + c.getId() + "';";
 		UserInfo us = DbAccessImpl.getObject(sql, ObjectType.user_info);
@@ -272,5 +277,6 @@ public class BookstorePersistImpl {
 	}
 	
 	
+
 	
 }
