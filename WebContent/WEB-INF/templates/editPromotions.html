@@ -22,22 +22,20 @@
     
     <body>
     	<#include "navbar.html">
-		<div class="container">  
+		<div class="container-fluid">  
+		<table cellspacing="0" class="table table-hover table-condensed">
+			<thread>
 			
-        	<table style ="width: 100%">
-            	<tr>	
+        	<!-- <table style ="width: 100%">-->
+            	<tr class = "promo_info">	
             		<th>Promo ID</th>
                 	<th>Expiration</th>
                 	<th>Activation Code</th>
                 	<th>Percentage</th>
                 	
             	</tr>
-            	<tr>
-
-
-
-
-
+            	</thread>
+            	<tbody>
 
 				<#list promotion as p>
             		<tr onclick="document.getElementById('${p.id?html}').submit()">
@@ -46,24 +44,18 @@
             		<td>${p.code}</td>
             		<td>${p.percentage}</td>
             		
-                	<td><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button></td>
-                	
+                	<!--<td><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button></td>
+                	-->
 
 					<form action="BookstoreServlet" method="POST" id="${p.id?html}">
                 		<input type="hidden" name="page" value="editPromoForm">
                 		<input type="hidden" name="editPromoId" value="${p.id?html}">
                 	</form>
                 	
-            		</tr>
+            		<tr>
             	</#list>
+            	</tbody>
             	
-            	
-            	
-            	
-            	
-                	
-                	
-            	</tr>
         	</table>
         	</div>
         </div>
