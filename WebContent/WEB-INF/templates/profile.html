@@ -36,7 +36,11 @@
                 <div class="col-md-2">
                     <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" class="img-rounded" alt="Default Profile" width="200" height="200">
                     <#if u.type == type>
-                    <p><a href="#">Edit Profile</a></p>
+                    <p><a href="javascript:{}" onclick="document.getElementById('editUserViewForm').submit()">Edit Profile</a></p>
+                    <form method="post" action="BookstoreServlet" id="editUserViewForm">
+                    	<input type="hidden" name="page" value="editUserView">
+                    	<input type="hidden" name="editUserViewId" value="${u.id?c?html}">
+                    </form>
                     </#if>
                    
                 </div>
@@ -71,11 +75,11 @@
                     <p>Surname: ${u.lname}</p>
                     <p>Email: ${u.email}</p>
                     <#if u.type == type>
-                    <p>Address: <#if u.address??>${u.address}</#if></p>
-                    <p>Phone Number: <#if u.number??>${u.number}</#if></p>
-                    <p>Card Type: <#if u.cardType??>${u.cardType}</#if></p>
-                    <p>Card Number: <#if u.cardNumber??>${u.cardNumber}</#if></p>
-                    <p>Card Expiration Date: <#if u.cardExpDate??>${u.cardExpDate}</#if></p>
+                    <p>Address: <#if userInfo.address??>${userInfo.address}</#if></p>
+                    <p>Phone Number: <#if userInfo.number??>${userInfo.number}</#if></p>
+                    <p>Card Type: <#if userInfo.cardType??>${userInfo.cardType}</#if></p>
+                    <p>Card Number: <#if userInfo.cardNumber??>${userInfo.cardNumber}</#if></p>
+                    <p>Card Expiration Date: <#if userInfo.cardExpDate??>${userInfo.cardExpDate}</#if></p>
                     </#if>
                     </fieldset>
                 </div>

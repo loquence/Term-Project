@@ -36,7 +36,7 @@
                 	<tr style="background:white">
                 	<td>${order.orderId}</td>
                 	<td>$${order.price?string(",##0.00")}</td>
-                	<td>$${(order.status)}<form action="BookstoreServlet" method="POST" id="${order.orderId?html}" onclick="clicked(event)" class="pull-right">
+                	<td>${(order.status)}<form action="BookstoreServlet" method="POST" id="${order.orderId?html}" onclick="clicked(event)" class="pull-right">
                 							<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"></span></button>
                 							<input type="hidden" name="page" value="deleteFromOrders">
                 							<input type="hidden" name="deleteBookId" value="${order.orderId}">

@@ -39,6 +39,9 @@ public class BookstoreLogicImpl {
 	public List<Book> getBookListAdv(String type, String value) {
 		return bookstorePersist.getBookListAdv(type,value);
 	}
+	public List<Book> getBookListAllColumn(String value) {
+		return bookstorePersist.getBookListAllColumn(value);
+	}
 	
 	public <T> T getPromotion(String column, String value) {
 		return bookstorePersist.getObject(column, ObjectType.promotion, value);

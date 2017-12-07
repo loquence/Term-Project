@@ -106,6 +106,10 @@ public class Customer extends User {
 	public List<Order> getOrders(){
 		return getPersist().getOrders(this);
 	}
+	
+	public int updateCustomer() {
+		return getPersist().updateCustomer(this);
+	}
 
 	
 }

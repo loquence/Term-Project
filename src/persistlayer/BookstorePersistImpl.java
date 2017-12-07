@@ -2,6 +2,9 @@ package persistlayer;
 import objectlayer.*;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleSequence;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -260,6 +263,18 @@ public class BookstorePersistImpl {
 		Order or = DbAccessImpl.getObject(sql2, ObjectType.order);
 		String updateCart = "UPDATE books_in_cart SET cart_id='" + 0 + "', order_id='"+ or.getOrderId() + "'where cart_id='" + c.getId() + "';";
 		int check = DbAccessImpl.update(updateCart);
+		if (check > 0) {
+			for(Book b: bk) {
+				
+				LocalDateTime now = LocalDateTime.now();
+			
+				int newQuantity = b.getQuantity() - b.getCartQuantity();
+				String updateQuantity = "UPDATE book SET quantity= '" +newQuantity+ "' where book_id='" + b.getId() + "';";
+				DbAccessImpl.update(updateQuantity);
+				String updateReports = "INSERT into reports (book_id,quantity,date,totalPrice) VALUES ('" + b.getId() + "','" + b.getCartQuantity() + "','" + now + "','" + (b.getSellingPrice() * b.getCartQuantity()) + "');";
+				DbAccessImpl.update(updateReports);
+			}
+		}
 		String sql = "SELECT * from bookstore.order where lastBookId='" + lastB + "';";
 		List<Order> o = DbAccessImpl.getList(sql, ObjectType.order, false,false);
 		
@@ -271,9 +286,23 @@ public class BookstorePersistImpl {
 		return DbAccessImpl.getList(sql, ObjectType.order, false, false);
 	}
 	
+	public int updateCustomer(Customer c) {
+		String sql = "UPDATE users SET fname= '" +c.getFname()+ "', lname='" + c.getLname() + "', email='" + c.getEmail() + "', type='" + c.getType() +"' where id='" + c.getId() + "';";
+		String sql2 = "UPDATE user_info SET phone_number='" + c.getUserInfo().getNumber() + "', card_type='" + c.getUserInfo().getCardType() + "', card_number='" + c.getUserInfo().getCardNumber() + "', card_exp_date='" +  c.getUserInfo().getCardExpDate() + "', address='" + c.getUserInfo().getAddress() + "' where user_id='" +c.getId() + "';";
+		DbAccessImpl.update(sql);
+		return DbAccessImpl.update(sql2);
+		
+	}
+	
 	public List<Book> getBookListAdv(String type, String value){
 	String sql = "SELECT * from book where " + type +" LIKE '%" + value + "%';";
 	return DbAccessImpl.getList(sql, ObjectType.book, false, false);
+	}
+	
+	public List<Book> getBookListAllColumn(String value){
+		String temp = "'%" + value + "%'";
+		String sql = "SELECT * from book WHERE isbn LIKE " + temp + " or title LIKE " + temp + " or category LIKE " + temp + " or author LIKE " + temp + " or edition LIKE " + temp + " or publisher LIKE " + temp + " or pub_year LIKE " + temp +";";
+		return DbAccessImpl.getList(sql, ObjectType.book, false, false);
 	}
 	
 	

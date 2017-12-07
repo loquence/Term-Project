@@ -59,6 +59,7 @@ public class BookstoreServlet extends HttpServlet {
     private List<Order> or;
     private List<Promotion> promoSq;
     private Promotion p;
+    UserInfo ui;
 
        
     /**
@@ -128,6 +129,12 @@ public class BookstoreServlet extends HttpServlet {
 		 * Checks if page who sent post request is the signup page
 		 * Currently this form is being handled by an ajax call.
 		 */
+		if(page.equals("allColumnSearch")) {
+			String all = request.getParameter("allColumnSearch");
+			bookSq = bookstoreLogicImpl.getBookListAllColumn(all);
+			root.put("bookSq", bookSq);
+			template="listSearch.html";
+		}
 		if(page.equals("search")) {
 			String type = request.getParameter("search");
 			String value = request.getParameter("advSearchValue");
@@ -338,14 +345,46 @@ public class BookstoreServlet extends HttpServlet {
 			u.setId((int) session.getAttribute("id"));
 			
 			if (session.getAttribute("type").equals(UserType.CUSTOMER)) {
+				
 				cart = u.getCart();
 				bookCart = u.getBooksInCart();
 				or = u.getOrders();
 				u.setOrderInfo(or);
+				ui = u.pullUserInfo();
+				root.put("userInfo", ui);
 				root.put("c",u);
 				root.put("order",or);
 				root.put("cart", cart);
 				root.put("bookCart", bookCart);
+			}
+			if(page.equals("editUserProfile")) {
+				String id = request.getParameter("editUserId");
+				String fname = request.getParameter("fname");
+				String lname = request.getParameter("lname");
+				String email = request.getParameter("email");
+				String number = request.getParameter("number");
+				String address =request.getParameter("address");
+				String cartType = request.getParameter("card_type");
+				String cardNumber = request.getParameter("card_number");
+				String cardExpDate = request.getParameter("card_exp_date");
+				UserInfo ut = new UserInfo(number,address,cartType,cardNumber,cardExpDate,true);
+				Customer c = new Customer(fname,lname,email,"",Status.VERIFIED);
+				c.setId(Integer.parseInt(id));
+				c.setUserInfo(ut);
+				c.updateCustomer();
+				
+				c = c.getUser("" + c.getId());
+				ut =c.pullUserInfo();
+				root.put("u", c);
+				root.put("userInfo", ut);
+				template="profile.html";
+			}
+			if(page.equals("editUserView")) {
+				String id = request.getParameter("editUserViewId");
+				u.setId(Integer.parseInt(id));
+				ui = u.pullUserInfo();
+				root.put("userInfo", ui);
+				template="editUserView.html";
 			}
 			if(page.equals("order")) {
 				template="viewOrder.html";
@@ -375,7 +414,7 @@ public class BookstoreServlet extends HttpServlet {
 				if(promos != null) {
 					flag = true;
 				}
-				UserInfo ui = new UserInfo(address,number,cardType,cardNum,cardExp,flag);
+				ui = new UserInfo(address,number,cardType,cardNum,cardExp,flag);
 				u.setUserInfo(ui);
 				int check = u.updateUserInfo();
 				cart = u.getCart();
@@ -386,7 +425,7 @@ public class BookstoreServlet extends HttpServlet {
 				u = u.getUser("" + u.getId());
 
 				root.put("cust", u);
-				root.put("userInfo", u.getUserInfo());
+				root.put("userInfo", u.pullUserInfo());
 				template="checkout.html";
 			}
 			if(page.equals("deleteFromCart")) {
@@ -570,6 +609,7 @@ public class BookstoreServlet extends HttpServlet {
 					root.put("u", us);
 					template="profile.html";
 				}
+				
 				
 				if(page.equals("suspendUser")) {
 					String id = request.getParameter("suspendUserId");
